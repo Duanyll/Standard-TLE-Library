@@ -93,24 +93,3 @@ class segtree{
 	#undef lson
 	#undef rson
 };
- 
-int main(){
-    int m,n;
-    cin >> m >> n;
-    segtree<int64_t>* tree = new segtree<int64_t>(n);
-    tree->init();
-    for(int i = 0;i<m;i++){
-        string s;
-        int l,r,val;
-        cin >> s;
-        if(s[0]=='Q'){
-            cin >> l >> r;
-            cout << tree->query(l,r) << endl;
-        }else{
-            cin >> l >> r >> val;
-            tree->add_range(l,r,val);
-        }
-    }
-    delete tree;
-    return 0;
-}
