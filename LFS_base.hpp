@@ -24,6 +24,10 @@ class LFS{
 			adde(a,b);
 			adde(b,a);
 		}
+
+        friend struct Dijkstra;
+        friend struct SPFA;
+        friend struct Bellman_Ford;
 	private:
 		struct Edge{
 			int to,next;
