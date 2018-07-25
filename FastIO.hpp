@@ -1,5 +1,6 @@
 #include <cctype>
 #include <cstdio>
+
 inline int read()
 {
     int X = 0, w = 0;

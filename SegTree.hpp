@@ -1,10 +1,3 @@
-/*
-	Name: SegTree
-	Author: Duanyll
-	Date: 19/07/18 11:53
-	Description: 线段树模板（POJ3468） 
-*/
-
 #include <iostream>
 #include <algorithm>
 #include <cstdio>
@@ -12,9 +5,7 @@
 using namespace std;
 
 const int MAXN = 100010;
-
-#define lson l, m, rt << 1
-#define rson m + 1, r, rt << 1 | 1
+typedef long long int64;
 
 template <typename value_t>
 class segtree
@@ -23,24 +14,29 @@ class segtree
 	segtree(int cnt)
 	{
 		this->cnt = cnt;
+		memset(sum,0,sizeof sum);
+		memset(lazy,0,sizeof lazy);
 	}
 	void init()
 	{
-		_Build(1, cnt, 1);
+		Build(1, cnt, 1);
 	}
 	void add_range(int l, int r, value_t val)
 	{
-		_Update(l, r, val, 1, cnt, 1);
+		Update(l, r, val, 1, cnt, 1);
 	}
 	value_t query(int l, int r)
 	{
-		return _Query(l, r, 1, cnt, 1);
+		return Query(l, r, 1, cnt, 1);
 	}
 
   private:
-	value_t lazy[MAXN * 4];
-	value_t sum[MAXN * 4];
+	value_t lazy[MAXN << 2];
+	value_t sum[MAXN << 2];
 	int cnt;
+
+#define lson l, m, rt << 1
+#define rson m + 1, r, rt << 1 | 1
 
 	void PushUP(int rt)
 	{
@@ -59,7 +55,7 @@ class segtree
 		}
 	}
 
-	void _Build(int l, int r, int rt)
+	void Build(int l, int r, int rt)
 	{
 		lazy[rt] = 0;
 		if (l == r)
@@ -68,29 +64,29 @@ class segtree
 			return;
 		}
 		int m = (l + r) >> 1;
-		_Build(lson);
-		_Build(rson);
+		Build(lson);
+		Build(rson);
 		PushUP(rt);
 	}
 
-	void _Update(int L, int R, value_t val, int l, int r, int rt)
+	void Update(int L, int R, value_t c, int l, int r, int rt)
 	{
 		if (L <= l && R >= r)
 		{
-			lazy[rt] += val;
-			sum[rt] += (value_t)val * (r - l + 1);
+			lazy[rt] += c;
+			sum[rt] += (value_t)c * (r - l + 1);
 			return;
 		}
 		PushDown(rt, r - l + 1);
 		int m = (l + r) >> 1;
 		if (L <= m)
-			_Update(L, R, val, lson);
+			Update(L, R, c, lson);
 		if (R > m)
-			_Update(L, R, val, rson);
+			Update(L, R, c, rson);
 		PushUP(rt);
 	}
 
-	value_t _Query(int L, int R, int l, int r, int rt)
+	value_t Query(int L, int R, int l, int r, int rt)
 	{
 		if (L <= l && R >= r)
 			return sum[rt];
@@ -98,9 +94,9 @@ class segtree
 		int m = (l + r) >> 1;
 		value_t ret = 0;
 		if (L <= m)
-			ret += _Query(L, R, lson);
+			ret += Query(L, R, lson);
 		if (R > m)
-			ret += _Query(L, R, rson);
+			ret += Query(L, R, rson);
 		return ret;
 	}
 
