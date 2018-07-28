@@ -10,7 +10,10 @@ const int INF = 0x3f3f3f3f;
 
 class LFS
 {
-public:
+  public:
+	LFS()
+	{
+	}
 	LFS(int N)
 	{
 		memset(head, -1, sizeof head);
@@ -29,16 +32,16 @@ public:
 		adde(b, a);
 	}
 
-protected:
+  protected:
 	struct Edge
 	{
-		int to, next;
+		int to, next, w;
 	} e[MAXN * 2];
 	int head[MAXN];
 	int ecnt;
 	int n;
 
-private:
+  private:
 	void dfs(int u, int fa)
 	{
 		for (int i = head[u]; i != -1; i = e[i].next)
