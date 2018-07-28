@@ -7,6 +7,9 @@ Duanyll菜鸡的模板库，oop封装+STL
 - 树状数组
 - tarjan求scc
 - 单源最短路
+- 单调队列
 ## 近期计划加入
 - 树链剖分
-- 单调队列
+- Kruskal
+- LIS
+- LCA

@@ -20,16 +20,17 @@ class LFS
 		ecnt = 0;
 		n = N;
 	}
-	void adde(int from, int to)
+	void adde(int from, int to,int w)
 	{
 		e[ecnt].to = to;
+        e[ecnt].w = w;
 		e[ecnt].next = head[from];
 		head[from] = ecnt++;
 	}
-	void addde(int a, int b)
+	void addde(int a, int b,int w)
 	{
-		adde(a, b);
-		adde(b, a);
+		adde(a, b,w);
+		adde(b, a,w);
 	}
 
   protected:
