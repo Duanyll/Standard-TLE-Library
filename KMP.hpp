@@ -69,4 +69,30 @@ struct KMP
             return -1;
         }
     }
+    int count(const value_t *S, const int n, const value_t *T, const int m)
+    {
+        int i = 0, j = 0;
+        int ans = 0;
+        while (i < n && j < m)
+        {
+            if (j == -1 || S[i] == T[j])
+            {
+                i++;
+                j++;
+            }
+            else
+            {
+                j = next[j];
+            }
+        }
+        if (j == m)
+        {
+            ans++;
+            j = next[m - 1] + 1;
+        }
+        else
+        {
+            return -1;
+        }
+    }
 };

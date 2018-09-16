@@ -4,8 +4,9 @@
 struct Dijkstra : public LFS
 {
   public:
-    Dijkstra(int n){
-        memset(dis,INF,sizeof dis);
+    Dijkstra(int n)
+    {
+        memset(dis, INF, sizeof dis);
         LFS(n);
     }
     int dis[MAXN];
@@ -32,4 +33,48 @@ struct Dijkstra : public LFS
             }
         }
     }
+};
+
+struct SPFA : public LFS
+{
+  public:
+    SPFA(int n)
+    {
+        memset(dis, INF, sizeof dis);
+        LFS(n);
+    }
+    int dis[MAXN];
+    void solve(int s)
+    {
+        memset(vis, false, sizeof vis);
+        memset(dis, INF, sizeof dis);
+        queue<int> Q;
+        Q.push(s);
+        vis[s] = 1;
+        dis[s] = 0;
+        while (!Q.empty())
+        {
+            int now = Q.front();
+            Q.pop();
+            vis[now] = 0;
+            for (int i = head[now]; i != -1; i = e[i].next)
+            {
+                int w = e[i].w;
+                int son = e[i].to;
+                printf("%d --> %d  , weight = %d\n", now, e[i].to, e[i].w);
+                if (dis[now] + w < dis[son])
+                {
+                    dis[son] = dis[now] + w;
+                    if (!vis[son])
+                    {
+                        Q.push(son);
+                        vis[son] = 1;
+                    }
+                }
+            }
+        }
+    }
+
+  private:
+    bool vis[MAXN];
 }
