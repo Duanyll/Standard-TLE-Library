@@ -1,25 +1,25 @@
-#include <iostream>
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-using namespace std;
-
-const int MAXN = 100010;
-typedef long long int64;
-
 template <typename value_t>
 class segtree
 {
   public:
+	segtree()
+	{
+	}
 	segtree(int cnt)
 	{
 		this->cnt = cnt;
-		memset(sum,0,sizeof sum);
-		memset(lazy,0,sizeof lazy);
+		memset(sum, 0, sizeof sum);
+		memset(lazy, 0, sizeof lazy);
 	}
 	void init()
 	{
 		Build(1, cnt, 1);
+	}
+	void init(value_t *num, int *rnk)
+	{
+		this->num = num;
+		this->rnk = rnk;
+		build(1, cnt, 1);
 	}
 	void add_range(int l, int r, value_t val)
 	{
@@ -29,18 +29,25 @@ class segtree
 	{
 		return Query(l, r, 1, cnt, 1);
 	}
+	value_t query(int x)
+	{
+		return Query(1, cnt, 1, x);
+	}
 
   private:
 	value_t lazy[MAXN << 2];
 	value_t sum[MAXN << 2];
 	int cnt;
 
+	value_t *num;
+	int *rnk;
+
 #define lson l, m, rt << 1
 #define rson m + 1, r, rt << 1 | 1
 
 	void PushUP(int rt)
 	{
-		sum[rt] = sum[rt << 1] + sum[rt << 1 | 1];
+		sum[rt] = max(sum[rt << 1], sum[rt << 1 | 1]);
 	}
 
 	void PushDown(int rt, int m)
@@ -66,6 +73,20 @@ class segtree
 		int m = (l + r) >> 1;
 		Build(lson);
 		Build(rson);
+		PushUP(rt);
+	}
+
+	void build(int l, int r, int rt)
+	{
+		lazy[rt] = 0;
+		if (l == r)
+		{
+			sum[rt] = num[rnk[rt]];
+			return;
+		}
+		int m = (l + r) >> 1;
+		build(lson);
+		build(rson);
 		PushUP(rt);
 	}
 
@@ -97,6 +118,21 @@ class segtree
 			ret += Query(L, R, lson);
 		if (R > m)
 			ret += Query(L, R, rson);
+		return ret;
+	}
+
+	value_t Query(int l, int r, int rt, int val)
+	{
+		if (l == r)
+			return sum[rt];
+		PushDown(rt, r - l + 1);
+		int m = (l + r) >> 1;
+		value_t ret = 0;
+		if (val <= m)
+			ret = Query(lson, val);
+		else
+			ret = Query(rson, val);
+		PushUP(rt);
 		return ret;
 	}
 
