@@ -2,6 +2,7 @@
 #include <cstring>
 #include <algorithm>
 #include <cstdio>
+#include <fstream>
 using namespace std;
 
 typedef long long int64;
