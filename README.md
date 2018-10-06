@@ -16,6 +16,7 @@ Duanyll菜鸡的模板库，oop封装+STL
 - LCA
 - Exgcd
 - 树链剖分
+- 线性筛素数
 
 ## 近期计划加入
 
