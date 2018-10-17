@@ -1,4 +1,33 @@
-template <typename value_t>
+#include <cstring>
+
+namespace segtree{
+	template<typename T>
+	struct Add{
+		T operator()(T l,T r){
+			return l+r;
+		}
+	};
+
+	template<typename T>
+	struct Add_pushdown{
+		void operator()(T val,T& l,T& r,T& lazyl,T& lazyr,T& laztrt){
+			lazyl += laztrt;
+			lazyr += lazyrt;
+			l += (val - (val >> 1)) * lazyrt;
+			r += (val >> 1) * lazyrt;
+		}
+	};
+
+	template<typename T>
+	struct Add_PD_Init{
+		void operator()(T val,T& rt,T& lazy,int len){
+			lazy += val;
+			rt += (T)val * (len);
+		}
+	};
+}
+
+template <typename T,typename TMerge,typename TPushDown,typename TPDInit>
 class segtree
 {
   public:
@@ -15,49 +44,45 @@ class segtree
 	{
 		Build(1, cnt, 1);
 	}
-	void init(value_t *num, int *rnk)
+	void init(T *num, int *rnk)
 	{
 		this->num = num;
 		this->rnk = rnk;
 		build(1, cnt, 1);
 	}
-	void add_range(int l, int r, value_t val)
+	void add_range(int l, int r, T val)
 	{
 		Update(l, r, val, 1, cnt, 1);
 	}
-	value_t query(int l, int r)
+	T query(int l, int r)
 	{
 		return Query(l, r, 1, cnt, 1);
 	}
-	value_t query(int x)
+	T query(int x)
 	{
 		return Query(1, cnt, 1, x);
 	}
 
   private:
-	value_t lazy[MAXN << 2];
-	value_t sum[MAXN << 2];
+	T lazy[MAXN << 2];
+	T sum[MAXN << 2];
 	int cnt;
 
-	value_t *num;
+	T *num;
 	int *rnk;
 
 #define lson l, m, rt << 1
 #define rson m + 1, r, rt << 1 | 1
 
-	void PushUP(int rt)
-	{
-		sum[rt] = sum[rt << 1] + sum[rt << 1 | 1];
+	void PushUP(int rt){
+		sum[rt] = TMerge(sum[rt<<1],sum[rt<<1|1]);
 	}
 
 	void PushDown(int rt, int m)
 	{
 		if (lazy[rt])
 		{
-			lazy[rt << 1] += lazy[rt];
-			lazy[rt << 1 | 1] += lazy[rt];
-			sum[rt << 1] += (m - (m >> 1)) * lazy[rt];
-			sum[rt << 1 | 1] += (m >> 1) * lazy[rt];
+			TPushDown()(m,sum[rt<<1],sum[rt<<1|1],lazy[rt<<1],lazy[rt<<1|1],lazy[rt]);
 			lazy[rt] = 0;
 		}
 	}
@@ -90,12 +115,11 @@ class segtree
 		PushUP(rt);
 	}
 
-	void Update(int L, int R, value_t c, int l, int r, int rt)
+	void Update(int L, int R, T c, int l, int r, int rt)
 	{
 		if (L <= l && R >= r)
 		{
-			lazy[rt] += c;
-			sum[rt] += (value_t)c * (r - l + 1);
+			TPDInit(c,sum[rt],lazy[rt],r-l+1);
 			return;
 		}
 		PushDown(rt, r - l + 1);
@@ -107,27 +131,27 @@ class segtree
 		PushUP(rt);
 	}
 
-	value_t Query(int L, int R, int l, int r, int rt)
+	T Query(int L, int R, int l, int r, int rt)
 	{
 		if (L <= l && R >= r)
 			return sum[rt];
 		PushDown(rt, r - l + 1);
 		int m = (l + r) >> 1;
-		value_t ret = 0;
+		T ret = T();
 		if (L <= m)
-			ret += Query(L, R, lson);
+			ret = TMerge(ret,Query(L, R, lson));
 		if (R > m)
-			ret += Query(L, R, rson);
+			ret = TMerge(ret,Query(L, R, rson));
 		return ret;
 	}
 
-	value_t Query(int l, int r, int rt, int val)
+	T Query(int l, int r, int rt, int val)
 	{
 		if (l == r)
 			return sum[rt];
 		PushDown(rt, r - l + 1);
 		int m = (l + r) >> 1;
-		value_t ret = 0;
+		T ret = T();
 		if (val <= m)
 			ret = Query(lson, val);
 		else
