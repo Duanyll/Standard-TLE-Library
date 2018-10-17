@@ -47,7 +47,7 @@ class segtree
 
 	void PushUP(int rt)
 	{
-		sum[rt] = max(sum[rt << 1], sum[rt << 1 | 1]);
+		sum[rt] = sum[rt << 1] + sum[rt << 1 | 1];
 	}
 
 	void PushDown(int rt, int m)
