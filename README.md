@@ -6,7 +6,7 @@ Duanyll菜鸡的模板库，oop封装+STL
 
 - 快速读写
 - KMP
-- 线段树
+- *线段树*
 - 树状数组
 - tarjan求scc
 - 单源最短路
@@ -17,8 +17,10 @@ Duanyll菜鸡的模板库，oop封装+STL
 - Exgcd
 - 树链剖分
 - 线性筛素数
+- treap
+- 分块
+- 模拟退火
 
 ## 近期计划加入
 
 - Dinic
-- 模拟退火
