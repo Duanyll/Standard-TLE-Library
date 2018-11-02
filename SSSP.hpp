@@ -61,7 +61,6 @@ struct SPFA : public LFS
             {
                 int w = e[i].w;
                 int son = e[i].to;
-                printf("%d --> %d  , weight = %d\n", now, e[i].to, e[i].w);
                 if (dis[now] + w < dis[son])
                 {
                     dis[son] = dis[now] + w;
@@ -77,4 +76,4 @@ struct SPFA : public LFS
 
   private:
     bool vis[MAXN];
-}
+};
