@@ -10,8 +10,10 @@ inline int read()
         w |= ch == '-';
         ch = getchar();
     }
-    while (isdigit(ch))
-        X = (X << 3) + (X << 1) + (ch ^ 48), ch = getchar();
+    while (isdigit(ch)){
+        X = (X << 3) + (X << 1) + (ch ^ 48);
+        ch = getchar();
+    }       
     return w ? -X : X;
 }
 
