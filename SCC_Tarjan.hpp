@@ -60,4 +60,4 @@ class SCC_Tarjan : public LFS
             }
         }
     }
-}
+};
