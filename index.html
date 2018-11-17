@@ -8,10 +8,8 @@ title: Standard-TLE-Library
 
 <ul>
 {% for file in site.static_files %}
-	{% if file.extname == 'hpp' %}
-		<li>
-			<a href="{{ file.path }}">{{ file.name }}</a>
-		</li>
-	{% endif %}
+<li>
+	<a href="{{ file.path }}">{{ file.name }}</a>
+</li>
 {% endfor %}
 </ul>
