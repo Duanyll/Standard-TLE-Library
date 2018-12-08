@@ -5,10 +5,10 @@
 using namespace std;
 
 template <typename value_t>
-class tree_array
+class fenwick
 {
   public:
-	tree_array(int n)
+	fenwick(int n)
 	{
 		memset(c, 0, sizeof c);
 		this->n = n;
