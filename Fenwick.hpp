@@ -25,7 +25,7 @@ class fenwick
 
 	value_t sum(int x)
 	{
-		int sum = 0;
+		value_t sum = 0;
 		while (x > 0)
 		{
 			sum += c[x];
