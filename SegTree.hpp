@@ -1,33 +1,29 @@
 #include <cstring>
+#include <iostream>
+using namespace std;
 
-namespace segtree{
-	template<typename T>
-	struct Add{
-		T operator()(T l,T r){
-			return l+r;
-		}
-	};
+template<typename T> 
+struct segtree_add{
+	static T merge(T l,T r){
+		return l+r;
+	}
 
-	template<typename T>
-	struct Add_pushdown{
-		void operator()(T val,T& l,T& r,T& lazyl,T& lazyr,T& laztrt){
-			lazyl += laztrt;
-			lazyr += lazyrt;
-			l += (val - (val >> 1)) * lazyrt;
-			r += (val >> 1) * lazyrt;
-		}
-	};
+	static void pushdown(T val,T& l,T& r,T& lazyl,T& lazyr,T& lazyrt){
+		lazyl += lazyrt;
+		lazyr += lazyrt;
+		l += (val - (val >> 1)) * lazyrt;
+		r += (val >> 1) * lazyrt;
+	}
 
-	template<typename T>
-	struct Add_PD_Init{
-		void operator()(T val,T& rt,T& lazy,int len){
-			lazy += val;
-			rt += (T)val * (len);
-		}
-	};
-}
+	static void pdinit(T val,T& rt,T& lazy,int len){
+		lazy += val;
+		rt += (T)val * (len);
+	}
+};
 
-template <typename T,typename TMerge,typename TPushDown,typename TPDInit>
+const int MAXN = 100010;
+
+template <typename T,typename oprs>
 class segtree
 {
   public:
@@ -75,14 +71,14 @@ class segtree
 #define rson m + 1, r, rt << 1 | 1
 
 	void PushUP(int rt){
-		sum[rt] = TMerge(sum[rt<<1],sum[rt<<1|1]);
+		sum[rt] = oprs::merge(sum[rt<<1],sum[rt<<1|1]);
 	}
 
 	void PushDown(int rt, int m)
 	{
 		if (lazy[rt])
 		{
-			TPushDown()(m,sum[rt<<1],sum[rt<<1|1],lazy[rt<<1],lazy[rt<<1|1],lazy[rt]);
+			oprs::pushdown(m,sum[rt<<1],sum[rt<<1|1],lazy[rt<<1],lazy[rt<<1|1],lazy[rt]);
 			lazy[rt] = 0;
 		}
 	}
@@ -119,7 +115,7 @@ class segtree
 	{
 		if (L <= l && R >= r)
 		{
-			TPDInit(c,sum[rt],lazy[rt],r-l+1);
+			oprs::pdinit(c,sum[rt],lazy[rt],r-l+1);
 			return;
 		}
 		PushDown(rt, r - l + 1);
