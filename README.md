@@ -4,28 +4,43 @@ Duanyll菜鸡的模板库，oop封装+STL
 
 ## 目前包括
 
-- 快速读写(FastIO)
-- KMP(KMP)
+### 数据结构
+
 - *线段树*(SegTree)
+	- 区间加法(SegTree_Classic)
+	- 区间覆盖(SegTree_Set)
+	- 区间合并(SegTree_Merge)
+- 单调队列(MonotonicQueue)
+- 树链剖分(TLS)
 - 树状数组(Fenwick)
+- treap(Treap)
+- 分块(Block)
+- ST表求RMQ(STTable)
+- DLX(DLX)
+
+### 图论
+
 - tarjan求scc(SCC_Tarjan)
 - tarjan求割顶(CutVertex_Tarjan)
 - 单源最短路(SSSP)
     - Dijkstra
     - SPFA
-- 单调队列(MonotonicQueue)
-- LIS(LIS)
 - Kruskal(Kruskal)
 - LCA(LCA)
+
+### 数学
+
 - Exgcd(Exgcd)
-- 树链剖分(TLS)
 - 线性筛素数(Linear_prime)
-- treap(Treap)
-- 分块(Block)
-- 模拟退火(SA)
 - 高精度(BigInteger)
-- ST表求RMQ(STTable)
 - 快速幂(FastPow)
+
+### 其他
+
+- LIS(LIS)
+- 快速读写(FastIO)
+- KMP(KMP)
+- 模拟退火(SA)
 
 ## 近期计划加入
 
