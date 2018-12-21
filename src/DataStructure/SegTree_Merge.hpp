@@ -105,3 +105,58 @@ class segtree_lmost : public segtree{
 		
 		segtree_lmost(int n):segtree(n){}
 };
+
+class segtree_lr : public segtree{
+	protected:
+		int queryl(int L,int R,int l,int r,int rt){
+			if(L<=l && r<=R){
+				return lsum[rt];
+			}
+			pushdown(rt,r-l+1);
+			int mid = (l+r) >> 1;
+			if(R <= mid){
+				return queryl(L,R,lson);
+			}else if(L > mid){
+				return queryl(L,R,rson);
+			}else{
+				int lans = queryl(L,mid,lson);
+				if(lans == mid-L+1){
+					return lans + queryl(mid+1,R,rson);
+				}else{
+					return lans;
+				}
+			}
+		}
+		
+		int queryr(int L,int R,int l,int r,int rt){
+			if(L<=l && r<=R){
+				return rsum[rt];
+			}
+			pushdown(rt,r-l+1);
+			int mid = (l+r)>>1;
+			if(R <= mid){
+				return queryr(L,R,lson);
+			}else if(L > mid){
+				return queryr(L,R,rson);
+			}else{
+				int rans = queryr(mid+1,R,rson);
+				if(rans == R-mid){
+					return queryr(L,mid,lson) + rans;
+				}else{
+					return rans;
+				}
+			}
+		}
+	public:
+		segtree_lr(int n):segtree(n){}
+		
+		int query(int x){
+			int ans = queryr(1,x,1,n,1) + queryl(x,n,1,n,1);
+			if(ans > 0){
+				ans -= 1;
+			}else{
+				ans = 0;
+			}
+			return ans;
+		}
+};
