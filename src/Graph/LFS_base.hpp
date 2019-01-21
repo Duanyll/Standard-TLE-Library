@@ -13,6 +13,9 @@ class LFS
   public:
 	LFS()
 	{
+		memset(head, -1, sizeof head);
+		ecnt = 0;
+		n = 0;
 	}
 	LFS(int N)
 	{
