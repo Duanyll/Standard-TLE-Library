@@ -27,9 +27,6 @@ template <typename T,typename oprs>
 class segtree
 {
   public:
-	segtree()
-	{
-	}
 	segtree(int cnt)
 	{
 		this->cnt = cnt;
