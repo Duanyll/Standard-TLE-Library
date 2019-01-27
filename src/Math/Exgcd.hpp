@@ -1,7 +1,5 @@
-int exgcd(int a, int b, int &x, int &y)
-{
-    if (!b)
-    {
+int exgcd(int a, int b, int &x, int &y) {
+    if (!b) {
         x = 1;
         y = 0;
         return a;
@@ -13,11 +11,9 @@ int exgcd(int a, int b, int &x, int &y)
     return GCD;
 }
 
-int inv1(int a, int MOD)
-{
+int inv1(int a, int MOD) {
     int x, y;
     int d = exgcd(a, MOD, x, y);
-    if (d == 1)
-        return (x % MOD + MOD) % MOD;
+    if (d == 1) return (x % MOD + MOD) % MOD;
     return -1;
 }

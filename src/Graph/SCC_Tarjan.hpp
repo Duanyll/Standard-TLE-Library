@@ -1,24 +1,21 @@
-#include "LFS_base.hpp"
 #include <stack>
+#include "LFS_base.hpp"
 
-class SCC_Tarjan : public LFS
-{
-  public:
-    void solve()
-    {
+class SCC_Tarjan : public LFS {
+   public:
+    void solve() {
         memset(dfn, -1, sizeof dfn);
         memset(low, -1, sizeof low);
         memset(ins, false, sizeof ins);
         tim = 1;
         scccnt = 0;
-        while (!s.empty())
-        {
+        while (!s.empty()) {
             s.pop();
         }
         tarjan(1);
     }
 
-  protected:
+   protected:
     stack<int> s;
     bool ins[MAXN];
     int scccnt;
@@ -26,33 +23,25 @@ class SCC_Tarjan : public LFS
     int mina[MAXN];
     int low[MAXN], dfn[MAXN];
     int tim;
-    void tarjan(int u)
-    {
+    void tarjan(int u) {
         dfn[u] = low[u] = tim++;
         s.push(u);
         ins[u] = true;
-        for (int i = head[u]; i != -1; i = e[i].next)
-        {
+        for (int i = head[u]; i != -1; i = e[i].next) {
             int v = e[i].to;
-            if (dfn[v] == -1)
-            {
+            if (dfn[v] == -1) {
                 tarjan(v);
                 low[u] = min(low[u], low[v]);
-            }
-            else
-            {
-                if (ins[v])
-                {
+            } else {
+                if (ins[v]) {
                     low[u] = min(low[u], dfn[v]);
                 }
             }
         }
-        if (dfn[u] == low[u])
-        {
+        if (dfn[u] == low[u]) {
             scccnt++;
             int v = 0;
-            while (v != u)
-            {
+            while (v != u) {
                 v = s.top();
                 s.pop();
                 ins[v] = false;
