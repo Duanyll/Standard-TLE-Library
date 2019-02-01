@@ -38,24 +38,24 @@ struct SPFA : public LFS {
     }
     int dis[MAXN];
     void solve(int s) {
-        memset(vis, false, sizeof vis);
+        memset(ins, false, sizeof ins);
         memset(dis, INF, sizeof dis);
-        queue<int> Q;
-        Q.push(s);
-        vis[s] = 1;
+        queue<int> q;
+        q.push(s);
+        ins[s] = true;
         dis[s] = 0;
-        while (!Q.empty()) {
-            int now = Q.front();
-            Q.pop();
-            vis[now] = 0;
+        while (!q.empty()) {
+            int now = q.front();
+            q.pop();
+            ins[now] = false;
             for (int i = head[now]; i != -1; i = e[i].next) {
                 int w = e[i].w;
-                int son = e[i].to;
-                if (dis[now] + w < dis[son]) {
-                    dis[son] = dis[now] + w;
-                    if (!vis[son]) {
-                        Q.push(son);
-                        vis[son] = 1;
+                int v = e[i].to;
+                if (dis[now] + w < dis[v]) {
+                    dis[v] = dis[now] + w;
+                    if (!ins[v]) {
+                        q.push(v);
+                        ins[v] = true;
                     }
                 }
             }
@@ -63,5 +63,5 @@ struct SPFA : public LFS {
     }
 
    private:
-    bool vis[MAXN];
+    bool ins[MAXN];
 };
