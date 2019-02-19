@@ -15,7 +15,6 @@ class segtree {
     }
     void add_range(int l, int r, value_t val) { Update(l, r, val, 1, cnt, 1); }
     value_t query(int l, int r) { return Query(l, r, 1, cnt, 1); }
-    value_t query(int x) { return Query(1, cnt, 1, x); }
 
    private:
     value_t lazy[MAXN << 2];
@@ -84,19 +83,6 @@ class segtree {
         value_t ret = 0;
         if (L <= m) ret += Query(L, R, lson);
         if (R > m) ret += Query(L, R, rson);
-        return ret;
-    }
-
-    value_t Query(int l, int r, int rt, int val) {
-        if (l == r) return sum[rt];
-        PushDown(rt, r - l + 1);
-        int m = (l + r) >> 1;
-        value_t ret = 0;
-        if (val <= m)
-            ret = Query(lson, val);
-        else
-            ret = Query(rson, val);
-        PushUP(rt);
         return ret;
     }
 
