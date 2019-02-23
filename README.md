@@ -27,6 +27,9 @@ Duanyll菜鸡的模板库，oop封装+STL
     - SPFA
 - Kruskal(Kruskal)
 - LCA(LCA)
+- 网络流(NetworkFlow_base)
+	- EK(EdmondsKarp)
+	- Dinic(Dinic)
 
 ### 数学
 
@@ -41,7 +44,3 @@ Duanyll菜鸡的模板库，oop封装+STL
 - 快速读写(FastIO)
 - KMP(KMP)
 - 模拟退火(SA)
-
-## 近期计划加入
-
-- Dinic

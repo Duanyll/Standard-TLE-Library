@@ -1,11 +1,10 @@
 #include <queue>
 #include "LFS_base.hpp"
 
-struct Dijkstra : public LFS {
+class Dijkstra : public LFS {
    public:
-    Dijkstra(int n) {
+    Dijkstra(int n) : LFS(n){
         memset(dis, INF, sizeof dis);
-        LFS(n);
     }
     int dis[MAXN];
     void solve(int s) {
@@ -30,11 +29,10 @@ struct Dijkstra : public LFS {
     }
 };
 
-struct SPFA : public LFS {
+class SPFA : public LFS {
    public:
-    SPFA(int n) {
+    SPFA(int n) : LFS(n){
         memset(dis, INF, sizeof dis);
-        LFS(n);
     }
     int dis[MAXN];
     void solve(int s) {

@@ -3,6 +3,8 @@
 
 class SCC_Tarjan : public LFS {
    public:
+   	int scccnt;
+    int belong[MAXN];
     void solve() {
         memset(dfn, -1, sizeof dfn);
         memset(low, -1, sizeof low);
@@ -18,8 +20,6 @@ class SCC_Tarjan : public LFS {
    protected:
     stack<int> s;
     bool ins[MAXN];
-    int scccnt;
-    int belong[MAXN];
     int mina[MAXN];
     int low[MAXN], dfn[MAXN];
     int tim;

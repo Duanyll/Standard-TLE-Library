@@ -35,4 +35,10 @@ class network_flow{
 			g[to].push_back(e.size()-1);
 			m += 2;
 		}
+				
+		void clear_flow(){
+			for(edge& i : e){
+				i.flow = 0;
+			}
+		}
 };
