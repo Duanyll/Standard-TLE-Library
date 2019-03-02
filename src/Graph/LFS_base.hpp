@@ -40,7 +40,7 @@ class LFS {
     int n;
 
    private:
-    void dfs(int u, int fa) {
+    virtual void dfs(int u, int fa) {
         for (int i = head[u]; i != -1; i = e[i].next) {
             int v = e[i].to;
             if (v != fa) {

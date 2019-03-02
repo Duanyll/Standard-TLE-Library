@@ -1,30 +1,10 @@
-#include <algorithm>
-#include <cctype>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <iostream>
-#include <map>
+#include "LFS_base.hpp"
 using namespace std;
 
-const size_t MAXN = 100010;
-
-class LCA {
+class LCA : public LFS{
    public:
-    LCA(int N) {
-        memset(head, -1, sizeof head);
+    LCA(int N) : LFS(n) {
         memset(dep, -1, sizeof dep);
-        ecnt = 0;
-        n = N;
-    }
-    void adde(int from, int to) {
-        e[ecnt].to = to;
-        e[ecnt].next = head[from];
-        head[from] = ecnt++;
-    }
-    void addde(int a, int b) {
-        adde(a, b);
-        adde(b, a);
     }
     void pre() { dfs(1, 1, 0); }
     int querylca(int a, int b) {
@@ -42,14 +22,7 @@ class LCA {
     }
 
    protected:
-    struct Edge {
-        int to, next;
-    } e[MAXN * 2];
-    int head[MAXN];
-    int ecnt;
-    int n;
     int dep[MAXN];
-    int dis[MAXN];
     int f[MAXN][22];
 
    private:
