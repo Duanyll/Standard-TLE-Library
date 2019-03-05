@@ -85,7 +85,7 @@ struct UnsignedBigInteger {
         if (len != a.len) {
             return len < a.len;
         }
-        for (int i = len; i >= 1; i++) {
+        for (int i = len; i >= 1; i--) {
             if (digit[i] != a.digit[i]) {
                 return digit[i] < a.digit[i];
             }

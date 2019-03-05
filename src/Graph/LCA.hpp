@@ -9,8 +9,11 @@ class LCA : public LFS{
     void pre() { dfs(1, 1, 0); }
     int querylca(int a, int b) {
         if (dep[a] > dep[b]) swap(a, b);
+        int h = dep[b] - dep[a];
         for (int i = 20; i >= 0; i--) {
-            if (dep[a] <= dep[f[b][i]]) b = f[b][i];
+            if(h & (1 << i)) {
+				b = f[b][i];
+			}
         }
         if (a == b) return a;
         for (int i = 20; i >= 0; i--) {
