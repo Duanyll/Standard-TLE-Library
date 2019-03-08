@@ -17,6 +17,7 @@ Duanyll菜鸡的模板库，oop封装+STL
 - 分块(Block)
 - ST表求RMQ(STTable)
 - DLX(DLX)
+- 笛卡尔树(CartesianTree)
 
 ### 图论
 

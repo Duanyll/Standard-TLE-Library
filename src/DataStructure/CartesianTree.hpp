@@ -8,7 +8,7 @@ public:
 		memset(lson,0,sizeof lson);
 		memset(rson,0,sizeof rson);
 		top = 0;
-		this.a = a;
+		this->a = a;
 		for(int i = 1;i <= n;i++){
 			while(top && a[s[top]] <= a[i]){
 				lson[i] = s[top--];
@@ -27,4 +27,4 @@ public:
 			}
 		}while(x = (r < x ? lson : rson)[x]);
 	}
-}
+};

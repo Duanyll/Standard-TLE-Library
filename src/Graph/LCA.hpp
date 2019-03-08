@@ -3,10 +3,11 @@ using namespace std;
 
 class LCA : public LFS{
    public:
-    LCA(int N) : LFS(n) {
+   	int dep[MAXN];
+    LCA(int n) : LFS(n) {
         memset(dep, -1, sizeof dep);
     }
-    void pre() { dfs(1, 1, 0); }
+    void pre(int rt = 1) { dfs(rt, 1, 0); }
     int querylca(int a, int b) {
         if (dep[a] > dep[b]) swap(a, b);
         int h = dep[b] - dep[a];
@@ -25,7 +26,6 @@ class LCA : public LFS{
     }
 
    protected:
-    int dep[MAXN];
     int f[MAXN][22];
 
    private:

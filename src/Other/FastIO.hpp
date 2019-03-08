@@ -29,7 +29,8 @@ inline double dbread() {
     return w ? -X : X;
 }
 
-inline void write(int x) {
+template<typename T>
+inline void write(T x) {
     if (x < 0) putchar('-'), x = -x;
     if (x > 9) write(x / 10);
     putchar(x % 10 + '0');

@@ -5,17 +5,36 @@ class SCC_Tarjan : public LFS {
    public:
    	int scccnt;
     int belong[MAXN];
-    void solve() {
-        memset(dfn, -1, sizeof dfn);
+	
+	SCC_Tarjan(int n) : LFS(n) {
+    	memset(dfn, -1, sizeof dfn);
         memset(low, -1, sizeof low);
         memset(ins, false, sizeof ins);
+		memset(belong,0,sizeof belong);
         tim = 1;
         scccnt = 0;
-        while (!s.empty()) {
-            s.pop();
-        }
-        tarjan(1);
     }
+	
+    void solve() {
+		for(int i = 1;i<=n;i++){
+			if(dfn[i] == -1){
+				tarjan(i);
+			}
+		}
+    }
+	
+	//缩点，先调用solve
+	void createnew(LFS* map){
+		for(int i = 1;i<=n;i++){
+			for(int j = head[i];j!=-1;j = e[j].next){
+				int u = belong[i];
+				int v = belong[e[j].to];
+				if(u != v){
+					map->adde(u,v,e[j].w);
+				}
+			}
+		}
+	}
 
    protected:
     stack<int> s;
