@@ -1,10 +1,10 @@
-#include "LFS_base.hpp"
+#include "lfs.hpp"
 using namespace std;
 
-class LCA : public LFS{
+class lca : public lfs{
    public:
    	int dep[MAXN];
-    LCA(int n) : LFS(n) {
+    lca(int n) : lfs(n) {
         memset(dep, -1, sizeof dep);
     }
     void pre(int rt = 1) { dfs(rt, 1, 0); }

@@ -12,12 +12,12 @@ const int INF = 0x3f3f3f3f;
 const int MAXN = 5e5 + 10;
 
 template<typename T,typename TMerge>
-class sttable {
+class spharse_table {
 	protected:
 		int st[MAXN][22];
 		// st[i][j]:从i开始,长度为1<<j的区间的最大值
 	public:
-		sttable(int n, const int *a) {
+		spharse_table(int n, const int *a) {
 			memset(st,0,sizeof st);
     		for (int i = 1; i <= n; i++) {
         		st[i][0] = a[i];

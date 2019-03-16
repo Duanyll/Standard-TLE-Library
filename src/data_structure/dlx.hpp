@@ -10,13 +10,13 @@ const int ROW = SIZE * SIZE * SIZE + 10;  //
 const int COL = SIZE * SIZE * N + 10;     //这三个常数是必须的
 const int POINT = ROW * 4 + COL;          //
 
-class DLX {
+class dlx {
    public:
     int n, m;
     int pcnt;
     int ansc, ans[ROW];
 
-    DLX(int N, int M) : n(N), m(M) {
+    dlx(int N, int M) : n(N), m(M) {
         pcnt = 0;
         ansc = 0;
         memset(ans, 0, sizeof ans);

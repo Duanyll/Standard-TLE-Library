@@ -10,7 +10,7 @@ const double TEND = EPS;
 const double DELTAT = 0.99;
 const double INF = 1e18;
 template <typename T, typename TComp>
-T SA(T s) {
+T sa(T s) {
     srand(SEED);
     double t = TBEGIN;
     double ans = INF;
@@ -34,9 +34,9 @@ T SA(T s) {
 
 const double MAX_TIME = 0.8;
 template <typename T, typename TComp>
-T SA_Time(T s) {
-    state ans = SA<state, TComp>(s);
+T sa_time(T s) {
+    state ans = sa<state, TComp>(s);
     while ((double)clock() / CLOCKS_PER_SEC < MAX_TIME)
-        ans = SA<state, TComp>(ans);
+        ans = sa<state, TComp>(ans);
     return ans;
 }

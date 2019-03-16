@@ -9,13 +9,3 @@ int64 pow_mod(int64 a, int64 b, int MOD) {
     }
     return res;
 }
-
-int64 pow_mod(int64 a, int64 b) {
-    int64 res = 1;
-    while (b) {
-        if (b & 1) res = res * a;
-        a = a * a;
-        b /= 2;
-    }
-    return res;
-}

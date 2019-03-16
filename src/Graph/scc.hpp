@@ -1,12 +1,12 @@
 #include <stack>
-#include "LFS_base.hpp"
+#include "lfs.hpp"
 
-class SCC_Tarjan : public LFS {
+class scc : public lfs {
    public:
    	int scccnt;
     int belong[MAXN];
 	
-	SCC_Tarjan(int n) : LFS(n) {
+	scc(int n) : lfs(n) {
     	memset(dfn, -1, sizeof dfn);
         memset(low, -1, sizeof low);
         memset(ins, false, sizeof ins);
@@ -24,7 +24,7 @@ class SCC_Tarjan : public LFS {
     }
 	
 	//缩点，先调用solve
-	void createnew(LFS* map){
+	void create_new(lfs* map){
 		for(int i = 1;i<=n;i++){
 			for(int j = head[i];j!=-1;j = e[j].next){
 				int u = belong[i];

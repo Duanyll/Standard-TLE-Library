@@ -13,7 +13,7 @@ const int MAXN = 110;
 const int MAXM = 1e6 + 10;
 
 //尝试处理负数会出现不可预测的错误！
-struct UnsignedBigInteger {
+struct unsigned_biginteger {
     static const int SIZE = 100000;
     static const int BASE = 1e8;
     // 1e8*1e8刚好到int64上限
@@ -24,12 +24,12 @@ struct UnsignedBigInteger {
     //即使ubint是0，len也是1
     int len;
 
-    UnsignedBigInteger() {
+    unsigned_biginteger() {
         memset(digit, 0, sizeof digit);
         len = 0;
     }
 
-    UnsignedBigInteger operator=(uint64 a) {
+    unsigned_biginteger operator=(uint64 a) {
         len = 0;
         do {
             digit[++len] = a % BASE;
@@ -38,7 +38,7 @@ struct UnsignedBigInteger {
         return *this;
     }
 
-    UnsignedBigInteger operator=(string &a) {
+    unsigned_biginteger operator=(string &a) {
         int offset = 0;
         if (a[0] == '-') {
             offset = 1;
@@ -69,7 +69,7 @@ struct UnsignedBigInteger {
         }
     }
 
-    bool operator==(const UnsignedBigInteger &a) const {
+    bool operator==(const unsigned_biginteger &a) const {
         if (len != a.len) {
             return false;
         }
@@ -81,7 +81,7 @@ struct UnsignedBigInteger {
         return true;
     }
 
-    bool operator<(const UnsignedBigInteger &a) const {
+    bool operator<(const unsigned_biginteger &a) const {
         if (len != a.len) {
             return len < a.len;
         }
@@ -93,16 +93,16 @@ struct UnsignedBigInteger {
         return false;
     }
 
-    bool operator>(const UnsignedBigInteger &a) const { return a < *this; }
+    bool operator>(const unsigned_biginteger &a) const { return a < *this; }
 
-    bool operator<=(const UnsignedBigInteger &a) const { return !(*this > a); }
+    bool operator<=(const unsigned_biginteger &a) const { return !(*this > a); }
 
-    bool operator>=(const UnsignedBigInteger &a) const { return !(*this < a); }
+    bool operator>=(const unsigned_biginteger &a) const { return !(*this < a); }
 
-    bool operator!=(const UnsignedBigInteger &a) const { return !(a == *this); }
+    bool operator!=(const unsigned_biginteger &a) const { return !(a == *this); }
 
-    UnsignedBigInteger operator+(const UnsignedBigInteger &a) const {
-        UnsignedBigInteger ans;
+    unsigned_biginteger operator+(const unsigned_biginteger &a) const {
+        unsigned_biginteger ans;
         for (int i = 1, jw = 0; jw != 0 || i <= len || i <= a.len; i++) {
             jw += digit[i] + a.digit[i];
             ans.digit[++ans.len] = jw % BASE;
@@ -112,8 +112,8 @@ struct UnsignedBigInteger {
     }
 
     //必须确保不会减出负数
-    UnsignedBigInteger operator-(const UnsignedBigInteger &a) const {
-        UnsignedBigInteger ans;
+    unsigned_biginteger operator-(const unsigned_biginteger &a) const {
+        unsigned_biginteger ans;
         ans.len = len;
         for (int i = 0; i <= len; i++) {
             if (digit[i] < a.digit[i]) ans.digit[i + 1]--, ans.digit[i] += BASE;
@@ -123,8 +123,8 @@ struct UnsignedBigInteger {
         return ans;
     }
 
-    UnsignedBigInteger operator*(const UnsignedBigInteger &a) const {
-        UnsignedBigInteger ans;
+    unsigned_biginteger operator*(const unsigned_biginteger &a) const {
+        unsigned_biginteger ans;
         ans.len = len + a.len;
         for (int i = 1; i <= len; i++) {
             int64 tmp = 0;
@@ -140,8 +140,8 @@ struct UnsignedBigInteger {
     }
 
     //懒得写高精度除法了
-    UnsignedBigInteger operator/(const int a) const {
-        UnsignedBigInteger ans;
+    unsigned_biginteger operator/(const int a) const {
+        unsigned_biginteger ans;
         ans.len = len;
         int64 tmp = 0;
         for (int i = len; i >= 1; i--) {
@@ -173,15 +173,15 @@ struct UnsignedBigInteger {
     }
 };
 
-istream &operator>>(istream &in, UnsignedBigInteger &a) {
+istream &operator>>(istream &in, unsigned_biginteger &a) {
     string str;
     in >> str;
     a = str;
     return in;
 }
 
-ostream &operator<<(ostream &out, const UnsignedBigInteger &a) {
-    char buf[UnsignedBigInteger ::BIT + 5];
+ostream &operator<<(ostream &out, const unsigned_biginteger &a) {
+    char buf[unsigned_biginteger ::BIT + 5];
     sprintf(buf, "%d", a.digit[a.len]);
     out << buf;
     for (int i = a.len - 1; i >= 1; i--) {
@@ -191,12 +191,12 @@ ostream &operator<<(ostream &out, const UnsignedBigInteger &a) {
     return out;
 }
 
-struct BigInteger {
-    UnsignedBigInteger val;  //绝对值
+struct biginteger {
+    unsigned_biginteger val;  //绝对值
     bool sign;
-    BigInteger() { sign = true; }
+    biginteger() { sign = true; }
 
-    BigInteger operator=(int64 a) {
+    biginteger operator=(int64 a) {
         if (a < 0) {
             sign = false;
             a = -a;
@@ -207,7 +207,7 @@ struct BigInteger {
         return *this;
     }
 
-    BigInteger operator=(string &a) {
+    biginteger operator=(string &a) {
         if (a[0] == '-') {
             sign = false;
         } else {
@@ -217,14 +217,14 @@ struct BigInteger {
         return *this;
     }
 
-    BigInteger operator-() const {
-        BigInteger ans;
+    biginteger operator-() const {
+        biginteger ans;
         ans.sign = !sign;
         ans.val = val;
         return ans;
     }
 
-    bool operator==(const BigInteger &a) const {
+    bool operator==(const biginteger &a) const {
         if (sign == a.sign) {
             return val == a.val;
         } else {
@@ -232,7 +232,7 @@ struct BigInteger {
         }
     }
 
-    bool operator<(const BigInteger &a) const {
+    bool operator<(const biginteger &a) const {
         if (sign) {
             if (a.sign) {
                 return val < a.val;
@@ -248,16 +248,16 @@ struct BigInteger {
         }
     }
 
-    bool operator>(const BigInteger &a) const { return a < *this; }
+    bool operator>(const biginteger &a) const { return a < *this; }
 
-    bool operator<=(const BigInteger &a) const { return !(*this > a); }
+    bool operator<=(const biginteger &a) const { return !(*this > a); }
 
-    bool operator>=(const BigInteger &a) const { return !(*this < a); }
+    bool operator>=(const biginteger &a) const { return !(*this < a); }
 
-    bool operator!=(const BigInteger &a) const { return !(a == *this); }
+    bool operator!=(const biginteger &a) const { return !(a == *this); }
 
-    BigInteger operator+(const BigInteger &a) const {
-        BigInteger ans;
+    biginteger operator+(const biginteger &a) const {
+        biginteger ans;
         if (sign) {
             if (a.sign) {
                 ans.sign = true;
@@ -288,10 +288,10 @@ struct BigInteger {
         return ans;
     }
 
-    BigInteger operator-(const BigInteger a) const { return *this + (-a); }
+    biginteger operator-(const biginteger a) const { return *this + (-a); }
 
-    BigInteger operator*(const BigInteger a) const {
-        BigInteger ans;
+    biginteger operator*(const biginteger a) const {
+        biginteger ans;
         if (sign == a.sign) {
             ans.sign = true;
         } else {
@@ -304,8 +304,8 @@ struct BigInteger {
         return ans;
     }
 
-    BigInteger operator/(const int a) const {
-        BigInteger ans;
+    biginteger operator/(const int a) const {
+        biginteger ans;
         if (sign == (a >= 0)) {
             ans.sign = true;
         } else {
@@ -321,14 +321,14 @@ struct BigInteger {
     int operator%(const int a) const { return val % a; }
 };
 
-istream &operator>>(istream &in, BigInteger &a) {
+istream &operator>>(istream &in, biginteger &a) {
     string str;
     in >> str;
     a = str;
     return in;
 }
 
-ostream &operator<<(ostream &out, const BigInteger &a) {
+ostream &operator<<(ostream &out, const biginteger &a) {
     if (!a.sign) {
         out << '-';
     }
@@ -336,5 +336,5 @@ ostream &operator<<(ostream &out, const BigInteger &a) {
     return out;
 }
 
-typedef UnsignedBigInteger ubint;
-typedef BigInteger bint;
+typedef unsigned_biginteger ubint;
+typedef biginteger bint;

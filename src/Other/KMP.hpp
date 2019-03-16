@@ -8,7 +8,7 @@ const int MAXM = 1e4 + 10;
 const int MAXN = 1e6 + 10;
 
 template <typename value_t>
-struct KMP {
+struct kmp {
    public:
     // S:源串    T:模式串
     int operator()(const value_t *S, const int n, const value_t *T,

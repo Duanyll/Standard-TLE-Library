@@ -8,14 +8,9 @@ using namespace std;
 const int MAXN = 100010;
 const int INF = 0x3f3f3f3f;
 
-class LFS {
+class lfs {
    public:
-    LFS() {
-        memset(head, -1, sizeof head);
-        ecnt = 0;
-        n = 0;
-    }
-    LFS(int N) {
+    lfs(int N) {
         memset(head, -1, sizeof head);
         ecnt = 0;
         n = N;

@@ -1,9 +1,9 @@
 #include <queue>
-#include "LFS_base.hpp"
+#include "lfs.hpp"
 
-class Dijkstra : public LFS {
+class dijkstra : public lfs {
    public:
-    Dijkstra(int n) : LFS(n){
+    dijkstra(int n) : lfs(n){
         memset(dis, INF, sizeof dis);
     }
     int dis[MAXN];
@@ -29,9 +29,9 @@ class Dijkstra : public LFS {
     }
 };
 
-class SPFA : public LFS {
+class spfa : public lfs {
    public:
-    SPFA(int n) : LFS(n){
+    spfa(int n) : lfs(n){
         memset(dis, INF, sizeof dis);
     }
     int dis[MAXN];

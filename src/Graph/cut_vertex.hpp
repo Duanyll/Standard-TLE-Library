@@ -1,7 +1,7 @@
 #include <vector>
 #include "LFS_base.hpp"
 
-class Cut_Vertex : public LFS {
+class cut_vertex : public lfs {
    protected:
     int dfn[MAXN], low[MAXN];
     int tim;
@@ -28,12 +28,12 @@ class Cut_Vertex : public LFS {
 
    public:
     vector<int> ans;
-    Cut_Vertex() {
+    cut_vertex(int n) : lfs(n) {
         memset(head, -1, sizeof head);
         ecnt = 0;
     }
 
-    void solve(int n) {
+    void solve() {
         memset(dfn, -1, sizeof dfn);
         tim = 1;
 

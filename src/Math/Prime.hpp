@@ -7,7 +7,7 @@ int prime[MAXN];
 bool isntp[MAXANS];
 int pcnt;
 
-void makeprime() {
+void make_prime() {
     pcnt = 0;
     memset(isntp, false, sizeof(isntp));
     for (int i = 2; i < MAXANS; ++i) {

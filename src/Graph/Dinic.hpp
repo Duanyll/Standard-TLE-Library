@@ -1,5 +1,5 @@
 #include <queue>
-#include "NetworkFlow_base.hpp"
+#include "network_flow.hpp"
 using namespace std;
 
 class dinic : public network_flow{
