@@ -4,18 +4,23 @@
 template <typename T>
 class tls : public lfs {
    public:
-    tls(int n, T* num) : lfs(n) {
+    tls(int n, int rt = 1) : lfs(n) {
+        root = rt;
         tim = 0;
-		this->num = num;
+        this->num = num;
         memset(son, -1, sizeof son);
-        dfs1(1, 0, 0);
-        dfs2(1, 1);
-        tree = new segtree<T>(n, num, rnk);
     }
 
     ~tls() { delete tree; }
 
     T* num;
+
+    void init(T* num){
+        this->num = num;
+        dfs1(root, 0, 0);
+        dfs2(root, root);
+        tree = new segtree<T>(n, num, rnk);
+    }
 
     void update(int x, int y, T val) {
         while (top[x] != top[y]) {
@@ -28,9 +33,9 @@ class tls : public lfs {
     }
 
     T query(int x) { return tree->query(tid[x], tid[x]); }
-	
-	T query(int x, int y) {
-		T ret = 0;
+
+    T query(int x, int y) {
+        T ret = 0;
         while (top[x] != top[y]) {
             if (dep[top[x]] < dep[top[y]]) swap(x, y);
             ret += tree->query(tid[top[x]], tid[x]);
@@ -38,9 +43,19 @@ class tls : public lfs {
         }
         if (dep[x] > dep[y]) swap(x, y);
         ret += tree->query(tid[x], tid[y]);
+        return ret;
+    }
+
+    void update_subtree(int u, T x){
+        tree->update(tid[u], tid[u]+size[u]-1, x);
+    }
+
+    T query_subtree(int u){
+        return tree->query(tid[u], tid[u]+size[u]-1);   
     }
 
    private:
+    int root;
     segtree<T> *tree;
     int tim;
     int size[MAXN], top[MAXN], son[MAXN];
