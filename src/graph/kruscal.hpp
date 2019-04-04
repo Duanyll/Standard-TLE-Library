@@ -51,7 +51,7 @@ class kruskal {
     	return ans;
 	}
 	
-	void create_tree(LFS *tree){
+	void create_tree(lfs *tree){
     	sort(e + 1, e + ecnt + 1, cmp);
     	for (int i = 1; i <= n; i++) {
         	fa[i] = i;

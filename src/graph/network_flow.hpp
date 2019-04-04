@@ -6,6 +6,7 @@
 using namespace std;
 
 const int MAXN = 110;
+const int INF = 0x3f3f3f3f;
 
 class network_flow{
 	protected:
