@@ -99,7 +99,9 @@ struct unsigned_biginteger {
 
     bool operator>=(const unsigned_biginteger &a) const { return !(*this < a); }
 
-    bool operator!=(const unsigned_biginteger &a) const { return !(a == *this); }
+    bool operator!=(const unsigned_biginteger &a) const {
+        return !(a == *this);
+    }
 
     unsigned_biginteger operator+(const unsigned_biginteger &a) const {
         unsigned_biginteger ans;

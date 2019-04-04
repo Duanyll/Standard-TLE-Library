@@ -5,17 +5,17 @@ class segtree {
         this->n = n;
         memset(sum, 0, sizeof sum);
         memset(lazy, 0, sizeof lazy);
-		build(1, n, 1);
+        build(1, n, 1);
     }
-	
-	segtree(int n,int* a){
-		this->n = n;
+
+    segtree(int n, int* a) {
+        this->n = n;
         memset(sum, 0, sizeof sum);
         memset(lazy, 0, sizeof lazy);
-		build_with_array(a, 1, n, 1);
-	}
-    segtree(int n, value_t *num, int *rnk) {
-		this->n = n;
+        build_with_array(a, 1, n, 1);
+    }
+    segtree(int n, value_t* num, int* rnk) {
+        this->n = n;
         memset(sum, 0, sizeof sum);
         memset(lazy, 0, sizeof lazy);
         build_for_tls(num, rnk, 1, n, 1);
@@ -54,8 +54,8 @@ class segtree {
         build(rson);
         pushup(rt);
     }
-	
-	void build_with_array(int* a,int l, int r, int rt) {
+
+    void build_with_array(int* a, int l, int r, int rt) {
         lazy[rt] = 0;
         if (l == r) {
             sum[rt] = a[l];

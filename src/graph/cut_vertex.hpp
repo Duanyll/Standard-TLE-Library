@@ -1,5 +1,5 @@
 #include <vector>
-#include "LFS_base.hpp"
+#include "lfs.hpp"
 
 class cut_vertex : public lfs {
    protected:

@@ -18,9 +18,7 @@ class segtree {
 
     void set(int l, int r, T val) { set(l, r, val, 1, n, 1); }
 
-    T query(int l, int r) {
-        return query(l,r,1,n,1);
-    }
+    T query(int l, int r) { return query(l, r, 1, n, 1); }
 #define lson l, m, rt << 1
 #define rson m + 1, r, rt << 1 | 1
 #define ls rt << 1
@@ -78,7 +76,7 @@ class segtree {
                 ret += query(L, R, rson);
             }
         }
-       return ret;
+        return ret;
     }
 #undef lson
 #undef rson

@@ -15,7 +15,7 @@ class tls : public lfs {
 
     T* num;
 
-    void init(T* num){
+    void init(T* num) {
         this->num = num;
         dfs1(root, 0, 0);
         dfs2(root, root);
@@ -46,17 +46,15 @@ class tls : public lfs {
         return ret;
     }
 
-    void update_subtree(int u, T x){
-        tree->update(tid[u], tid[u]+size[u]-1, x);
+    void update_subtree(int u, T x) {
+        tree->update(tid[u], tid[u] + size[u] - 1, x);
     }
 
-    T query_subtree(int u){
-        return tree->query(tid[u], tid[u]+size[u]-1);   
-    }
+    T query_subtree(int u) { return tree->query(tid[u], tid[u] + size[u] - 1); }
 
    private:
     int root;
-    segtree<T> *tree;
+    segtree<T>* tree;
     int tim;
     int size[MAXN], top[MAXN], son[MAXN];
     int dep[MAXN], tid[MAXN], rnk[MAXN], fa[MAXN];

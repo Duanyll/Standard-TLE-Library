@@ -1,20 +1,18 @@
 #include "lfs.hpp"
 using namespace std;
 
-class lca : public lfs{
+class lca : public lfs {
    public:
-   	int dep[MAXN];
-    lca(int n) : lfs(n) {
-        memset(dep, -1, sizeof dep);
-    }
+    int dep[MAXN];
+    lca(int n) : lfs(n) { memset(dep, -1, sizeof dep); }
     void pre(int rt = 1) { dfs(rt, 1, 0); }
     int querylca(int a, int b) {
         if (dep[a] > dep[b]) swap(a, b);
         int h = dep[b] - dep[a];
         for (int i = 20; i >= 0; i--) {
-            if(h & (1 << i)) {
-				b = f[b][i];
-			}
+            if (h & (1 << i)) {
+                b = f[b][i];
+            }
         }
         if (a == b) return a;
         for (int i = 20; i >= 0; i--) {

@@ -3,38 +3,38 @@
 
 class scc : public lfs {
    public:
-   	int scccnt;
+    int scccnt;
     int belong[MAXN];
-	
-	scc(int n) : lfs(n) {
-    	memset(dfn, -1, sizeof dfn);
+
+    scc(int n) : lfs(n) {
+        memset(dfn, -1, sizeof dfn);
         memset(low, -1, sizeof low);
         memset(ins, false, sizeof ins);
-		memset(belong,0,sizeof belong);
+        memset(belong, 0, sizeof belong);
         tim = 1;
         scccnt = 0;
     }
-	
+
     void solve() {
-		for(int i = 1;i<=n;i++){
-			if(dfn[i] == -1){
-				tarjan(i);
-			}
-		}
+        for (int i = 1; i <= n; i++) {
+            if (dfn[i] == -1) {
+                tarjan(i);
+            }
+        }
     }
-	
-	//缩点，先调用solve
-	void create_new(lfs* map){
-		for(int i = 1;i<=n;i++){
-			for(int j = head[i];j!=-1;j = e[j].next){
-				int u = belong[i];
-				int v = belong[e[j].to];
-				if(u != v){
-					map->adde(u,v,e[j].w);
-				}
-			}
-		}
-	}
+
+    //缩点，先调用solve
+    void create_new(lfs* map) {
+        for (int i = 1; i <= n; i++) {
+            for (int j = head[i]; j != -1; j = e[j].next) {
+                int u = belong[i];
+                int v = belong[e[j].to];
+                if (u != v) {
+                    map->adde(u, v, e[j].w);
+                }
+            }
+        }
+    }
 
    protected:
     stack<int> s;

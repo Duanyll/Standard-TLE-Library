@@ -3,9 +3,7 @@
 
 class dijkstra : public lfs {
    public:
-    dijkstra(int n) : lfs(n){
-        memset(dis, INF, sizeof dis);
-    }
+    dijkstra(int n) : lfs(n) { memset(dis, INF, sizeof dis); }
     int dis[MAXN];
     void solve(int s) {
         priority_queue<pair<int, int>, vector<pair<int, int>>,
@@ -31,9 +29,7 @@ class dijkstra : public lfs {
 
 class spfa : public lfs {
    public:
-    spfa(int n) : lfs(n){
-        memset(dis, INF, sizeof dis);
-    }
+    spfa(int n) : lfs(n) { memset(dis, INF, sizeof dis); }
     int dis[MAXN];
     void solve(int s) {
         memset(ins, false, sizeof ins);
