@@ -14,7 +14,7 @@ const int MAXN = 5e5 + 10;
 template<typename T,typename TMerge>
 class spharse_table {
 	protected:
-		int st[MAXN][22];
+		T st[MAXN][22];
 		// st[i][j]:从i开始,长度为1<<j的区间的最大值
 	public:
 		spharse_table(int n, const int *a) {
@@ -30,7 +30,7 @@ class spharse_table {
     		}
 		}
 
-		int query(int l, int r) {
+		T query(int l, int r) {
     		int k = 0;
     		while ((1 << (k + 1)) <= r - l + 1) {
         		k++;
