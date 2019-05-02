@@ -19,8 +19,7 @@ class segtree {
     void set(int l, int r, T val) { set(l, r, val, 1, n, 1); }
 
     T query(int l, int r) {
-        // return query(l,r,1,n,1);
-        return sum[1];
+        return query(l,r,1,n,1);
     }
 #define lson l, m, rt << 1
 #define rson m + 1, r, rt << 1 | 1
@@ -64,7 +63,6 @@ class segtree {
         maintain(l, r, rt);
     }
 
-    // TODO: Fix query
     T query(int L, int R, int l, int r, int rt) {
         T ret = 0;
         if (setv[rt] >= 0) {
@@ -79,8 +77,8 @@ class segtree {
             if (R > m) {
                 ret += query(L, R, rson);
             }
-            return ret;
         }
+       return ret;
     }
 #undef lson
 #undef rson
