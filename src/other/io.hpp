@@ -1,8 +1,9 @@
 #include <cctype>
 #include <cstdio>
 
-inline int read() {
-    int X = 0, w = 0;
+template <typename T = int>
+inline T read() {
+    T X = 0, w = 0;
     char ch = 0;
     while (!isdigit(ch)) {
         w |= ch == '-';

@@ -1,7 +1,6 @@
-typedef long long int64;
-
-int64 pow_mod(int64 a, int64 b, int MOD) {
-    int64 res = 1;
+template <typename T>
+T pow_mod(T a, T b, T MOD) {
+    T res = 1;
     while (b) {
         if (b & 1) res = res * a % MOD;
         a = a * a % MOD;
