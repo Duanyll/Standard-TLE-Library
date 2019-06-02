@@ -4,6 +4,7 @@ using namespace std;
 
 const int MAXM = 1e5 + 10;
 
+template <size_t NODE, size_t EDGE>
 class kruskal {
     struct edge {
         int to, from;
@@ -13,11 +14,11 @@ class kruskal {
             from = _f;
             dis = _dis;
         }
-    } e[MAXM * 2];
+    } e[EDGE * 2];
 
     int ecnt;
     int n;
-    int fa[MAXN];
+    int fa[NODE];
     int find(int u) { return (fa[u] == u) ? u : fa[u] = find(fa[u]); }
 
     static bool cmp(const edge& a, const edge& b) { return a.dis < b.dis; }
@@ -49,7 +50,7 @@ class kruskal {
         return ans;
     }
 
-    void create_tree(lfs* tree) {
+    void create_tree(lfs<NODE, EDGE>& tree) {
         sort(e + 1, e + ecnt + 1, cmp);
         for (int i = 1; i <= n; i++) {
             fa[i] = i;
@@ -60,7 +61,7 @@ class kruskal {
         while (cnt < n && pos <= ecnt) {
             edge now = e[++pos];
             if (find(now.from) != find(now.to)) {
-                tree->addde(now.from, now.to, now.dis);
+                tree.addde(now.from, now.to, now.dis);
                 cnt++;
                 fa[find(now.from)] = find(fa[now.to]);
             }

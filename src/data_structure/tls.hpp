@@ -1,8 +1,8 @@
 #include "../graph/lfs.hpp"
 #include "segtree.hpp"
 
-template <typename T>
-class tls : public lfs {
+template <typename T, size_t SIZE>
+class tls : public lfs<SIZE> {
    public:
     tls(int n, int rt = 1) : lfs(n) {
         root = rt;
@@ -19,7 +19,7 @@ class tls : public lfs {
         this->num = num;
         dfs1(root, 0, 0);
         dfs2(root, root);
-        tree = new segtree<T>(n, num, rnk);
+        tree = new segtree<T, SIZE>(n, num, rnk);
     }
 
     void update(int x, int y, T val) {
@@ -54,10 +54,10 @@ class tls : public lfs {
 
    private:
     int root;
-    segtree<T>* tree;
+    segtree<T, SIZE>* tree;
     int tim;
-    int size[MAXN], top[MAXN], son[MAXN];
-    int dep[MAXN], tid[MAXN], rnk[MAXN], fa[MAXN];
+    int size[SIZE], top[SIZE], son[SIZE];
+    int dep[SIZE], tid[SIZE], rnk[SIZE], fa[SIZE];
     void dfs1(int u, int fa, int d) {
         dep[u] = d;
         this->fa[u] = fa;

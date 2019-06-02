@@ -4,12 +4,7 @@
 #include <iostream>
 using namespace std;
 
-const int N = 4;
-const int SIZE = N * N;
-const int ROW = SIZE * SIZE * SIZE + 10;  //
-const int COL = SIZE * SIZE * N + 10;     //这三个常数是必须的
-const int POINT = ROW * 4 + COL;          //
-
+template <size_t SIZE, size_t ROW, size_t COL, size_t POINT>
 class dlx {
    public:
     int n, m;

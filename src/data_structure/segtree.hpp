@@ -1,4 +1,4 @@
-template <typename value_t>
+template <typename value_t, size_t SIZE>
 class segtree {
    public:
     segtree(int n) {
@@ -24,8 +24,8 @@ class segtree {
     value_t query(int l, int r) { return query(l, r, 1, n, 1); }
 
    private:
-    value_t lazy[MAXN << 2];
-    value_t sum[MAXN << 2];
+    value_t lazy[SIZE << 2];
+    value_t sum[SIZE << 2];
     int n;
 
 #define lson l, mid, rt << 1

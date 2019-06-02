@@ -2,10 +2,11 @@
 #include "network_flow.hpp"
 using namespace std;
 
-class edmonds_karp : public network_flow {
+template <size_t SIZE>
+class edmonds_karp : public network_flow<SIZE> {
    private:
-    int a[MAXN];   //起点到i的可改进量
-    int fa[MAXN];  //最短路树上的入边
+    int a[SIZE];   //起点到i的可改进量
+    int fa[SIZE];  //最短路树上的入边
    public:
     edmonds_karp(int n) : network_flow(n) {
         memset(a, 0, sizeof a);

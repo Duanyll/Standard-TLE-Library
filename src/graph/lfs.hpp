@@ -5,9 +5,9 @@
 #include <vector>
 using namespace std;
 
-const int MAXN = 100010;
 const int INF = 0x3f3f3f3f;
 
+template <size_t SIZE = 100010, size_t EDGE = SIZE * 2>
 class lfs {
    public:
     lfs(int N) {
@@ -29,8 +29,8 @@ class lfs {
    protected:
     struct Edge {
         int to, next, w;
-    } e[MAXN * 2];
-    int head[MAXN];
+    } e[EDGE];
+    int head[SIZE];
     int ecnt;
     int n;
 
