@@ -1,10 +1,11 @@
 #include <cstring>
 
-template <size_t SIZE, size_t STACK_SIZE = 1000>
+const int MAXN = 1e7 + 10;
+
 class cartesian_tree {
    protected:
-    int lson[SIZE], rson[SIZE], rt;
-    int s[STACK_SIZE], top;
+    int lson[MAXN], rson[MAXN], rt;
+    int s[1000], top;
     int* a;
 
    public:

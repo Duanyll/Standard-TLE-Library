@@ -1,11 +1,10 @@
 #include <queue>
 #include "lfs.hpp"
 
-template <size_t SIZE>
-class dijkstra : public lfs<SIZE> {
+class dijkstra : public lfs {
    public:
     dijkstra(int n) : lfs(n) { memset(dis, INF, sizeof dis); }
-    int dis[SIZE];
+    int dis[MAXN];
     void solve(int s) {
         priority_queue<pair<int, int>, vector<pair<int, int>>,
                        greater<pair<int, int>>>
@@ -28,11 +27,10 @@ class dijkstra : public lfs<SIZE> {
     }
 };
 
-template <size_t SIZE>
-class spfa : public lfs<SIZE> {
+class spfa : public lfs {
    public:
     spfa(int n) : lfs(n) { memset(dis, INF, sizeof dis); }
-    int dis[SIZE];
+    int dis[MAXN];
     void solve(int s) {
         memset(ins, false, sizeof ins);
         memset(dis, INF, sizeof dis);
@@ -59,5 +57,5 @@ class spfa : public lfs<SIZE> {
     }
 
    private:
-    bool ins[SIZE];
+    bool ins[MAXN];
 };

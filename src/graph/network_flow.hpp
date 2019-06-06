@@ -5,9 +5,9 @@
 #include <vector>
 using namespace std;
 
+const int MAXN = 110;
 const int INF = 0x3f3f3f3f;
 
-template <size_t SIZE>
 class network_flow {
    protected:
     struct edge {
@@ -18,7 +18,7 @@ class network_flow {
     };
     int n, m;
     vector<edge> e;
-    vector<int> g[SIZE];
+    vector<int> g[MAXN];
 
    public:
     network_flow() {

@@ -1,11 +1,10 @@
 #include <stack>
 #include "lfs.hpp"
 
-template <size_t SIZE>
-class scc : public lfs<SIZE> {
+class scc : public lfs {
    public:
     int scccnt;
-    int belong[SIZE];
+    int belong[MAXN];
 
     scc(int n) : lfs(n) {
         memset(dfn, -1, sizeof dfn);
@@ -39,9 +38,9 @@ class scc : public lfs<SIZE> {
 
    protected:
     stack<int> s;
-    bool ins[SIZE];
-    int mina[SIZE];
-    int low[SIZE], dfn[SIZE];
+    bool ins[MAXN];
+    int mina[MAXN];
+    int low[MAXN], dfn[MAXN];
     int tim;
     void tarjan(int u) {
         dfn[u] = low[u] = tim++;

@@ -2,12 +2,11 @@
 #include "network_flow.hpp"
 using namespace std;
 
-template<size_t SIZE>
-class dinic : public network_flow<SIZE> {
+class dinic : public network_flow {
    private:
-    int dis[SIZE];  //起点到i的距离
-    int cur[SIZE];  //当前弧
-    bool vis[SIZE];
+    int dis[MAXN];  //起点到i的距离
+    int cur[MAXN];  //当前弧
+    bool vis[MAXN];
 
     int s, t;
 

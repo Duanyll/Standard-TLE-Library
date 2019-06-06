@@ -1,10 +1,9 @@
 #include <vector>
 #include "lfs.hpp"
 
-template<size_t SIZE>
-class cut_vertex : public lfs<SIZE> {
+class cut_vertex : public lfs {
    protected:
-    int dfn[SIZE], low[SIZE];
+    int dfn[MAXN], low[MAXN];
     int tim;
     void dfs(int u, int fa) {
         int cc = 0;

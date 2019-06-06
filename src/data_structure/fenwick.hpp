@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-template <typename value_t, size_t SIZE>
+template <typename value_t>
 class fenwick {
    public:
     fenwick(int n) {
@@ -31,7 +31,7 @@ class fenwick {
     value_t sum(int x1, int x2) { return sum(x2) - sum(x1 - 1); }
 
    private:
-    value_t c[SIZE];
+    value_t c[MAXN];
     int n;
 
     inline int Lowbit(int x) { return x & (-x); }

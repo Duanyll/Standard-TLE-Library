@@ -1,10 +1,9 @@
 #include "lfs.hpp"
 using namespace std;
 
-template<size_t SIZE>
-class lca : public lfs<SIZE> {
+class lca : public lfs {
    public:
-    int dep[SIZE];
+    int dep[MAXN];
     lca(int n) : lfs(n) { memset(dep, -1, sizeof dep); }
     void pre(int rt = 1) { dfs(rt, 1, 0); }
     int querylca(int a, int b) {
@@ -25,7 +24,7 @@ class lca : public lfs<SIZE> {
     }
 
    protected:
-    int f[SIZE][22];
+    int f[MAXN][22];
 
    private:
     void dfs(int u, int d, int fa) {

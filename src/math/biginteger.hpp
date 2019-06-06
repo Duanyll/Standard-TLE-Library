@@ -13,8 +13,8 @@ const int MAXN = 110;
 const int MAXM = 1e6 + 10;
 
 //尝试处理负数会出现不可预测的错误！
-template <size_t SIZE = 100000>
 struct unsigned_biginteger {
+    static const int SIZE = 100000;
     static const int BASE = 1e8;
     // 1e8*1e8刚好到int64上限
     static const int BIT = 8;
@@ -175,17 +175,15 @@ struct unsigned_biginteger {
     }
 };
 
-template <size_t SIZE>
-istream &operator>>(istream &in, unsigned_biginteger<SIZE> &a) {
+istream &operator>>(istream &in, unsigned_biginteger &a) {
     string str;
     in >> str;
     a = str;
     return in;
 }
 
-template <size_t SIZE = 100000>
-ostream &operator<<(ostream &out, const unsigned_biginteger<SIZE> &a) {
-    char buf[unsigned_biginteger<SIZE>::BIT + 5];
+ostream &operator<<(ostream &out, const unsigned_biginteger &a) {
+    char buf[unsigned_biginteger ::BIT + 5];
     sprintf(buf, "%d", a.digit[a.len]);
     out << buf;
     for (int i = a.len - 1; i >= 1; i--) {
@@ -195,7 +193,6 @@ ostream &operator<<(ostream &out, const unsigned_biginteger<SIZE> &a) {
     return out;
 }
 
-template <size_t SIZE = 100000>
 struct biginteger {
     unsigned_biginteger val;  //绝对值
     bool sign;
@@ -326,16 +323,14 @@ struct biginteger {
     int operator%(const int a) const { return val % a; }
 };
 
-template <size_t SIZE = 100000>
-istream &operator>>(istream &in, biginteger<SIZE> &a) {
+istream &operator>>(istream &in, biginteger &a) {
     string str;
     in >> str;
     a = str;
     return in;
 }
 
-template <size_t SIZE = 100000>
-ostream &operator<<(ostream &out, const biginteger<SIZE> &a) {
+ostream &operator<<(ostream &out, const biginteger &a) {
     if (!a.sign) {
         out << '-';
     }
@@ -343,5 +338,5 @@ ostream &operator<<(ostream &out, const biginteger<SIZE> &a) {
     return out;
 }
 
-typedef unsigned_biginteger<100000> ubint;
-typedef biginteger<100000> bint;
+typedef unsigned_biginteger ubint;
+typedef biginteger bint;

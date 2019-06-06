@@ -7,7 +7,7 @@ using namespace std;
 const int MAXM = 1e4 + 10;
 const int MAXN = 1e6 + 10;
 
-template <typename value_t = char, size_t MAXM = 10010, size_t MAXN = 100010>
+template <typename value_t>
 struct kmp {
    public:
     // S:源串    T:模式串
