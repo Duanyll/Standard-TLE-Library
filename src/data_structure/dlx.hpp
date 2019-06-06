@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-template <size_t SIZE, size_t ROW, size_t COL, size_t POINT>
+template <size_t ROW, size_t COL, size_t POINT>
 class dlx {
    public:
     int n, m;
