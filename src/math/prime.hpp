@@ -1,4 +1,7 @@
 #include <cstring>
+#include "pow_mod.hpp"
+
+typedef long long int64;
 
 const int MAXA = 5e6 + 10;
 const int AMXA = 5e6;
@@ -45,4 +48,24 @@ void init_phi() {
             }
         }
     }
+}
+
+bool mr(int64 x, int64 b) {
+    int64 d, p = 0;
+    d = x - 1;
+    while ((d & 1) == 0) d >>= 1, ++p;
+    int i;
+    int64 cur = pow_mod(b, d, x);  //快速幂
+    if (cur == 1 || cur == x - 1) return true;
+    for (i = 1; i <= p; ++i) {
+        cur = cur * cur % x;
+        //为了防止溢出,这里最好用快速乘或者直接用__int128转化一下
+        if (cur == x - 1) return true;
+    }
+    if (i > p) return false;
+}
+bool is_not_prime(int64 x) {
+    if (x == 46856248255981 || x < 2) return false;
+    if (x == 2 || x == 3 || x == 7 || x == 61 || x == 24251) return true;
+    return mr(x, 2) && mr(x, 3) && mr(x, 7) && mr(x, 61) && mr(x, 24251);
 }
