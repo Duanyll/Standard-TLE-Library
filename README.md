@@ -1,7 +1,5 @@
 # Standard-TLE-Library
 
-Duanyll菜鸡的oi模板库
-
 ## 目前包括
 
 ### 数据结构
