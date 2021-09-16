@@ -8,7 +8,7 @@ class segtree {
         build(1, n, 1);
     }
 
-    segtree(int n, int* a) {
+    segtree(int n, value_t* a) {
         this->n = n;
         memset(sum, 0, sizeof sum);
         memset(lazy, 0, sizeof lazy);
@@ -55,7 +55,7 @@ class segtree {
         pushup(rt);
     }
 
-    void build_with_array(int* a, int l, int r, int rt) {
+    void build_with_array(value_t* a, int l, int r, int rt) {
         lazy[rt] = 0;
         if (l == r) {
             sum[rt] = a[l];

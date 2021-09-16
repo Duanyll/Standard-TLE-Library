@@ -5,7 +5,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/usr/include",
-                "/usr/include/c++/7"
+                "/usr/include/c++/9"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

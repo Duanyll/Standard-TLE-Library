@@ -7,7 +7,7 @@ const double EPS = 1e-8;
 int dcmp(double x, double y) {
 	double c = x - y;
 	if (c > EPS) return 1;
-	if (c < EPS) return -1;
+	if (c < -EPS) return -1;
 	return 0;
 }
 
