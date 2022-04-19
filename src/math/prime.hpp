@@ -65,7 +65,7 @@ bool mr(int64 x, int64 b) {
     }
     return false;
 }
-bool is_not_prime(int64 x) {
+bool is_prime(int64 x) {
     if (x == 46856248255981ll || x < 2) return false;
     if (x == 2 || x == 3 || x == 7 || x == 61 || x == 24251) return true;
     return mr(x, 2) && mr(x, 3) && mr(x, 7) && mr(x, 61) && mr(x, 24251);

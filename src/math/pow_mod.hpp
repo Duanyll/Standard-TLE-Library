@@ -4,7 +4,7 @@ T pow_mod(T a, T b, T MOD) {
     while (b) {
         if (b & 1) res = res * a % MOD;
         a = a * a % MOD;
-        b /= 2;
+        b >>= 1;
     }
     return res;
 }

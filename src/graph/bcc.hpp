@@ -4,7 +4,9 @@
 
 class bcc : public lfs {
    protected:
-    int dfn[MAXN], low[MAXN], tim;
+    int dfn[MAXN];
+    int low[MAXN];
+    int tim;
     int color[MAXN];  //  处理bcc数组时防重复用
     stack<pair<int, int>> s;
 

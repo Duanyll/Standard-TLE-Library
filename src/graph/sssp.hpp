@@ -1,4 +1,5 @@
 #include <queue>
+
 #include "lfs.hpp"
 
 class dijkstra : public lfs {
@@ -8,19 +9,19 @@ class dijkstra : public lfs {
     void solve(int s) {
         priority_queue<pair<int, int>, vector<pair<int, int>>,
                        greater<pair<int, int>>>
-            que;
+            q;
         dis[s] = 0;
-        que.push(pair<int, int>(0, s));
-        while (!que.empty()) {
-            pair<int, int> p = que.top();
-            que.pop();
-            int v = p.second;
-            if (dis[v] < p.first) continue;
-            for (int i = head[v]; ~i; i = e[i].next) {
-                Edge now = e[i];
-                if (now.w + dis[v] < dis[now.to]) {
-                    dis[now.to] = now.w + dis[v];
-                    que.push(pair<int, int>(dis[now.to], now.to));
+        q.push({0, s});
+        while (!q.empty()) {
+            auto x = q.top();
+            q.pop();
+            int u = x.second;
+            if (dis[u] < x.first) continue;
+            for (int i = head[u]; i != -1; i = e[i].next) {
+                int v = e[i].to;
+                if (dis[u] + e[i].w < dis[v]) {
+                    dis[v] = dis[u] + e[i].w;
+                    q.push({dis[v], v});
                 }
             }
         }
@@ -43,8 +44,8 @@ class spfa : public lfs {
             q.pop();
             ins[now] = false;
             for (int i = head[now]; i != -1; i = e[i].next) {
-                int w = e[i].w;
                 int v = e[i].to;
+                int w = e[i].w;
                 if (dis[now] + w < dis[v]) {
                     dis[v] = dis[now] + w;
                     if (!ins[v]) {
