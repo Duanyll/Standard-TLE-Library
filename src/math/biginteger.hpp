@@ -34,7 +34,7 @@ struct unsigned_biginteger {
         do {
             digit[++len] = a % BASE;
             a /= BASE;
-        } while (a == 0);
+        } while (a != 0);
         return *this;
     }
 
@@ -131,7 +131,7 @@ struct unsigned_biginteger {
         for (int i = 1; i <= len; i++) {
             int64 tmp = 0;
             for (int j = 1; j <= a.len || tmp != 0; j++) {
-                tmp += (int64)digit[i] * a.digit[i] + ans.digit[i + j - 1];
+                tmp += (int64)digit[i] * a.digit[j] + ans.digit[i + j - 1];
                 //不要忘了类型转换！！
                 ans.digit[i + j - 1] = tmp % BASE;
                 tmp /= BASE;

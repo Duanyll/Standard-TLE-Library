@@ -42,3 +42,31 @@ bool gauss(const vector<vector<T>>& in, vector<T>& out) {
 	}
 	return true;
 }
+
+template <typename T>
+T det(vector<vector<T>> a, T mod, int n = -1) {
+    T symbol = 1;
+    if (n == -1) n = a.size();
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            while (a[i][i] != 0) {
+                T d = a[j][i] / a[i][i] % mod;
+                for (int k = i; k < n; k++) {
+                    a[j][k] -= a[i][k] * d % mod;
+                    a[j][k] = (a[j][k] % mod + mod) % mod;
+                }
+                swap(a[i], a[j]);
+                symbol = -symbol;
+            }
+            swap(a[i], a[j]);
+            symbol = -symbol;
+        }
+    }
+
+    T ans = symbol;
+    for (int i = 0; i < n; i++) {
+        ans *= a[i][i];
+        ans %= mod;
+    }
+    return (ans + mod) % mod;
+}

@@ -1,4 +1,5 @@
 #include <queue>
+
 #include "lfs.hpp"
 using namespace std;
 
@@ -8,11 +9,7 @@ class kruskal {
     struct edge {
         int to, from;
         int dis;
-        edge(int _t = 0, int _f = 0, int _dis = 0) {
-            to = _t;
-            from = _f;
-            dis = _dis;
-        }
+        edge(int to = 0, int from = 0, int dis = 0) : to(to), from(from), dis(dis) {}
     } e[MAXM * 2];
 
     int ecnt;
