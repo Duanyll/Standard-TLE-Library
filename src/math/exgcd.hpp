@@ -5,17 +5,17 @@ T exgcd(T a, T b, T &x, T &y) {
         y = 0;
         return a;
     }
-    T GCD = exgcd(b, a % b, x, y);
+    T g = exgcd(b, a % b, x, y);
     T tmp = x;
     x = y;
     y = tmp - a / b * y;
-    return GCD;
+    return g;
 }
 
 template <typename T>
-T inv1(T a, T MOD) {
+T inv1(T a, T mod) {
     T x, y;
-    T d = exgcd(a, MOD, x, y);
-    if (d == 1) return (x % MOD + MOD) % MOD;
+    T d = exgcd(a, mod, x, y);
+    if (d == 1) return (x % mod + mod) % mod;
     return -1;
 }

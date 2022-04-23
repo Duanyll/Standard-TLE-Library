@@ -1,7 +1,5 @@
-int64 ans;
-int64 tmp[MAXN];
 template <typename T>
-void merge_sort(T* a, int l, int r) {
+void merge_sort(T* a, int l, int r, int& ans, T* tmp) {
     if (l == r) return;
     int mid = (l + r) >> 1;
     merge_sort(a, l, mid);
@@ -25,4 +23,13 @@ void merge_sort(T* a, int l, int r) {
     for (int i = l; i <= r; i++) {
         a[i] = tmp[i];
     }
+}
+
+template <typename T> 
+int merge_sort(T* a, int n) {
+    auto tmp = new T[n + 10];
+    int ans = 0;
+    merge_sort(a, 1, n, ans, tmp);
+    delete[] tmp;
+    return ans;
 }

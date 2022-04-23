@@ -1,42 +1,41 @@
 #include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <ctime>
+#include <functional>
+#include <random>
 using namespace std;
 
-#define SEED time(0)
 const double TBEGIN = 3000;
 const double EPS = 1e-14;
 const double TEND = EPS;
 const double DELTAT = 0.99;
 const double INF = 1e18;
-template <typename T, typename TComp>
-T sa(T s) {
-    srand(SEED);
+
+template <typename TValue>
+TValue sa(function<void(function<double()>)> step, function<TValue()> f,
+          function<void(bool)> update,
+          decltype(mt19937::default_seed) seed =
+              chrono::steady_clock::now().time_since_epoch().count()) {
     double t = TBEGIN;
     double ans = INF;
-    T now = s;
+    mt19937 rd(seed);
     while (t > EPS) {
-        T n = now.get_new(
-            [](double t) -> double { return (rand() * 2 - RAND_MAX) * t; }, t);
-        double nans = n.get_ans();
-        if (TComp()(nans, ans)) {
-            ans = nans;
-            now = n;
+        uniform_real_distribution dis(0, t);
+        step([&]() -> auto { return dis(rd); });
+        TValue cur = f();
+        if (cur < ans) {
+            ans = cur;
+            update(true);
         } else {
-            if (exp((ans - nans) / t) * RAND_MAX > rand()) {
-                now = n;
+            bernoulli_distribution accept(max(1.0lf, exp((ans - nans) / t)));
+            if (accept(rd)) {
+                update(true);
+            } else {
+                update(false);
             }
         }
         t *= DELTAT;
     }
-    return now;
-}
-
-const double MAX_TIME = 0.8;
-template <typename T, typename TComp>
-T sa_time(T s) {
-    state ans = sa<state, TComp>(s);
-    while ((double)clock() / CLOCKS_PER_SEC < MAX_TIME)
-        ans = sa<state, TComp>(ans);
     return ans;
 }
