@@ -1,63 +1,93 @@
 #include "../graph/lfs.hpp"
 #include "segtree.hpp"
 
-template <typename T>
 class tls : public lfs {
    public:
-    tls(int n, int rt = 1) : lfs(n) {
-        root = rt;
-        tim = 0;
-        this->num = num;
-        memset(son, -1, sizeof son);
-    }
+    tls(int n, int root = 1)
+        : lfs(n, (n - 1) * 2),
+          root(root),
+          tree(1),
+          size(n + 1, 0),
+          top(n + 1, 0),
+          son(n + 1, -1),
+          dep(n + 1, 0),
+          tid(n + 1, 0),
+          rnk(n + 1, 0),
+          fa(n + 1, 0) {}
 
-    ~tls() { delete tree; }
-
-    T* num;
-
-    void init(T* num) {
-        this->num = num;
+    template <typename TBaseData>
+    void init(TBaseData* num) {
         dfs1(root, 0, 0);
         dfs2(root, root);
-        tree = new segtree<T>(n, num, rnk);
+        vector<TBaseData> data(n + 1, 0);
+        for (int i = 1; i <= n; i++) {
+            data[i] = num[rnk[i]];
+        }
+        tree = segtree(n, data.data());
     }
 
-    void update(int x, int y, T val) {
+    template <typename TUpdate>
+    void update(int x, int y, const TUpdate& data) {
         while (top[x] != top[y]) {
             if (dep[top[x]] < dep[top[y]]) swap(x, y);
-            tree->update(tid[top[x]], tid[x], val);
+            tree.update(tid[top[x]], tid[x], data);
             x = fa[top[x]];
         }
         if (dep[x] > dep[y]) swap(x, y);
-        tree->update(tid[x], tid[y], val);
+        tree.update(tid[x], tid[y], data);
     }
 
-    T query(int x) { return tree->query(tid[x], tid[x]); }
+    template <typename TQuery>
+    TQuery query(int x) {
+        return tree.query<TQuery>(tid[x], tid[x]);
+    }
 
-    T query(int x, int y) {
-        T ret = 0;
+    template <typename TQuery>
+    TQuery query(int x, int y) {
+        TQuery x_to_lca;
+        TQuery lca_to_y;
         while (top[x] != top[y]) {
-            if (dep[top[x]] < dep[top[y]]) swap(x, y);
-            ret += tree->query(tid[top[x]], tid[x]);
-            x = fa[top[x]];
+            if (dep[top[x]] >= dep[top[y]]) {
+                TQuery seg = tree.query<TQuery>(tid[top[x]], tid[x]);
+                seg.flip();
+                x_to_lca.merge_right(seg);
+                x = fa[top[x]];
+            } else {
+                TQuery seg = tree.query<TQuery>(tid[top[y]], tid[y]);
+                lca_to_y.merge_left(seg);
+                y = fa[top[y]];
+            }
         }
-        if (dep[x] > dep[y]) swap(x, y);
-        ret += tree->query(tid[x], tid[y]);
-        return ret;
+        if (dep[x] >= dep[y]) {
+            TQuery seg = tree.query<TQuery>(tid[y], tid[x]);
+            seg.flip();
+            x_to_lca.merge_right(seg);
+            x_to_lca.merge_right(lca_to_y);
+            return x_to_lca;
+        } else {
+            TQuery seg = tree.query<TQuery>(tid[x], tid[y]);
+            x_to_lca.merge_right(seg);
+            x_to_lca.merge_right(lca_to_y);
+            return x_to_lca;
+        }
     }
 
-    void update_subtree(int u, T x) {
-        tree->update(tid[u], tid[u] + size[u] - 1, x);
+    template <typename TUpdate>
+    void update_subtree(int u, const TUpdate& data) {
+        tree.update(tid[u], tid[u] + size[u] - 1, data);
     }
 
-    T query_subtree(int u) { return tree->query(tid[u], tid[u] + size[u] - 1); }
+    template <typename TQuery>
+    TQuery query_subtree(int u) {
+        return tree.query<TQuery>(tid[u], tid[u] + size[u] - 1);
+    }
 
    private:
     int root;
-    segtree<T>* tree;
-    int tim;
-    int size[MAXN], top[MAXN], son[MAXN];
-    int dep[MAXN], tid[MAXN], rnk[MAXN], fa[MAXN];
+    segtree tree;
+    int tim = 0;
+    vector<int> size, top, son, dep, tid, rnk, fa;
+
     void dfs1(int u, int fa, int d) {
         dep[u] = d;
         this->fa[u] = fa;

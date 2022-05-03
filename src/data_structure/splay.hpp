@@ -29,7 +29,7 @@ class splay_seq {
         root = nullptr;
     }
     void append(T val) {
-        insert(root, ++size(), val);
+        insert(root, size() + 1, val);
         splay(root, size());
     }
     size_t size() { return (root == nullptr) ? 0 : root->size; }
@@ -165,5 +165,5 @@ class splay_seq {
     }
 
    private:
-    splay_seq& operator=(const splay_seq& s) {}
+    splay_seq& operator=(const splay_seq& s) = delete;
 };
