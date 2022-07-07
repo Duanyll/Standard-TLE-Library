@@ -1,9 +1,18 @@
 #include <algorithm>
+#include <cassert>
+#include <cctype>
+#include <cmath>
 #include <cstdio>
 #include <cstring>
+#include <fstream>
 #include <iostream>
+#include <string>
 #include <vector>
 using namespace std;
+
+typedef long long int64;
+
+const int INF = 0x3f3f3f3f;
 
 template <typename value_t>
 class fenwick {

@@ -5,29 +5,28 @@
 #include <cstdio>
 #include <cstring>
 #include <fstream>
+#include <functional>
 #include <iostream>
 #include <string>
 #include <vector>
-#include <functional>
 using namespace std;
 
 typedef long long int64;
 
 const int INF = 0x3f3f3f3f;
 
-template <typename TAns>
 struct segment {
     int id;
     int l, r;
-    TAns ans;
+    int ans;
 };
 
-template <typename TAns>
-void offline_segments(int n, vector<segment<TAns>>& segments,
+template <typename TQuery, typename TAns>
+void offline_segments(int n, vector<TQuery>& queries,
                       function<void(int, TAns&)> add,
-                      function<void(int, TAns&)> del) {
+                      function<void(int, TAns&)> del, TAns ans_reset = TAns()) {
     int block_size = ceil(sqrt(n));
-    sort(segments.begin(), segments.end(),
+    sort(queries.begin(), queries.end(),
          [&](const auto& a, const auto& b) -> bool {
              if (a.l / block_size != b.l / block_size) {
                  return a.l / block_size < b.l / block_size;
@@ -40,14 +39,14 @@ void offline_segments(int n, vector<segment<TAns>>& segments,
 
     int l = 1;
     int r = 1;
-    TAns ans = 0;
+    TAns ans = ans_reset;
     add(1, ans);
-    for (auto& seg : segments) {
-        while (l > seg.l) add(--l, ans);
-        while (r < seg.r) add(++r, ans);
-        while (l < seg.l) del(l++, ans);
-        while (r > seg.r) del(r--, ans);
-        seg.ans = ans;
+    for (auto& q : queries) {
+        while (l > q.l) add(--l, ans);
+        while (r < q.r) add(++r, ans);
+        while (l < q.l) del(l++, ans);
+        while (r > q.r) del(r--, ans);
+        q.ans = ans;
     }
 }
 
@@ -55,7 +54,7 @@ template <typename TQuery, typename TAns>
 void offline_segments(int n, vector<TQuery>& queries,
                       function<void(TQuery&)> direct_process,
                       function<void(int, TAns&)> add, function<void(int)> del,
-                      TAns ans_reset) {
+                      TAns ans_reset = TAns()) {
     // 划分分块
     int block_size = sqrt(n);
     int block_count = n / block_size;
@@ -86,7 +85,7 @@ void offline_segments(int n, vector<TQuery>& queries,
              }
          });
 
-    TAns ans = ans_reset;
+    TAns ans;
     int last_block = 0;
     int l = 1;
     int r = 0;
@@ -101,7 +100,7 @@ void offline_segments(int n, vector<TQuery>& queries,
             while (l <= r) del(l++);
             l = block_r[block[q.l]] + 1;
             r = block_r[block[q.l]];
-            ans = ans_reset;
+            ans = TAns();
             last_block = block[q.l];
         }
         while (r < q.r) add(++r, ans);
