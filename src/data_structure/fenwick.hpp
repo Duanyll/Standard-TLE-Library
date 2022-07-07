@@ -2,20 +2,18 @@
 #include <cstdio>
 #include <cstring>
 #include <iostream>
+#include <vector>
 using namespace std;
 
 template <typename value_t>
 class fenwick {
    public:
-    fenwick(int n) {
-        memset(c, 0, sizeof c);
-        this->n = n;
-    }
+    fenwick(int n) : n(n), c(n + 1, 0) {}
 
     void add(int i, value_t x) {
         while (i <= n) {
             c[i] += x;
-            i += Lowbit(i);
+            i += lowbit(i);
         }
     }
 
@@ -23,16 +21,16 @@ class fenwick {
         value_t sum = 0;
         while (x > 0) {
             sum += c[x];
-            x -= Lowbit(x);
+            x -= lowbit(x);
         }
         return sum;
     }
 
-    value_t sum(int x1, int x2) { return sum(x2) - sum(x1 - 1); }
+    value_t sum(int l, int r) { return sum(r) - sum(l - 1); }
 
    private:
-    value_t c[MAXN];
+    vector<value_t> c;
     int n;
 
-    inline int Lowbit(int x) { return x & (-x); }
+    inline int lowbit(int x) { return x & (-x); }
 };
