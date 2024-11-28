@@ -17,6 +17,7 @@
     - [Splay](#splay)
     - [树链剖分](#树链剖分)
     - [Treap](#treap)
+    - [可持久化 DSU](#可持久化-dsu)
   - [图论](#图论)
     - [边双连通分量与染色](#边双连通分量与染色)
     - [点双连通分量和割点](#点双连通分量和割点)
@@ -47,6 +48,7 @@
     - [质数](#质数)
       - [线性筛](#线性筛)
       - [欧拉 Phi 函数](#欧拉-phi-函数)
+      - [杜教筛](#杜教筛)
       - [MR 素数测试](#mr-素数测试)
   - [其他](#其他)
     - [AC 自动机](#ac-自动机)
@@ -231,7 +233,6 @@ class dlx {
         p[p[c].r].l = p[p[c].l].r = c;
     }
 };
-
 ```
 
 ### 树状数组
@@ -286,7 +287,7 @@ $$
           &= \sum_{j=1}^i(a_j) + (i+1)\sum_{j=1}^i(d_j) + \sum_{j=1}^i(d_j*j) 
 \end{aligned}
 $$
-  
+
 发现我们需要维护$a_i$, $d_i$, $d_i\times i$的前缀和. 代码可以这样写:
 
 ```cpp
@@ -357,7 +358,7 @@ int query(int x, int y) {
 ```
 
 因此不难做到二维单点修改, 矩阵查询.
-  
+
 #### 二维矩阵修改, 矩阵查询
 
 首先说明一下二维差分怎么写. 由二维前缀和的形式, 定义
@@ -1285,7 +1286,7 @@ class treap {
         if (rt == nullptr) {
             rt = new node(x);
         } else if (rt->val == x) {
-        	rt->count++;
+            rt->count++;
         } else {
             int d = rt->where(x);
             insert(rt->ch[d], x);
@@ -1302,7 +1303,7 @@ class treap {
         if (rt->val != x) {
             remove(rt->ch[d], x);
         } else if (rt->count > 1) {
-        	rt->count--;
+            rt->count--;
         } else if (rt->ch[0] == nullptr) {
             rt = rt->ch[1];
             delete u;
@@ -1458,6 +1459,96 @@ class treap {
         T result = -INF;
         prev(root, x, result);
         return result;
+    }
+};
+```
+
+### 可持久化 DSU
+
+```cpp
+#include <algorithm>
+using namespace std;
+
+const int MAXN = 1e5 + 5;
+const int LOG = 20;
+
+class persistent_dsu {
+   private:
+    struct node {
+        int lson, rson, fa, deep;
+    } a[MAXN * LOG + 5];
+    int n, m, top, root[MAXN + 5];
+
+   public:
+    inline int build(int l, int r) {
+        int num = ++top;
+        if (l == r) {
+            a[num].fa = l;
+            return num;
+        }
+        int mid = l + r >> 1;
+        a[num].lson = build(l, mid);
+        a[num].rson = build(mid + 1, r);
+        return num;
+    }
+    inline int que(int now, int l, int r, int x) {
+        if (l == r) return now;
+        int mid = l + r >> 1;
+        if (mid >= x)
+            return que(a[now].lson, l, mid, x);
+        else
+            return que(a[now].rson, mid + 1, r, x);
+    }
+    inline int find(int now, int x) {
+        int fa = que(root[now], 1, n, x);
+        if (a[fa].fa == x) return fa;
+        return find(now, a[fa].fa);
+    }
+    inline int clone(int x) {
+        int num = ++top;
+        a[num] = a[x];
+        return num;
+    }
+    inline int hb(int x, int l, int r, int fx, int fy) {
+        int num = clone(x);
+        if (l == r) {
+            a[num].fa = fy;
+            return num;
+        }
+        int mid = l + r >> 1;
+        if (mid >= fx) {
+            a[num].lson = hb(a[x].lson, l, mid, fx, fy);
+        } else
+            a[num].rson = hb(a[x].rson, mid + 1, r, fx, fy);
+        return num;
+    }
+    inline int add(int now, int l, int r, int x) {
+        int num = clone(now);
+        if (l == r) {
+            ++a[num].deep;
+            return num;
+        }
+        int mid = l + r >> 1;
+        if (mid >= x)
+            a[num].lson = add(a[now].lson, l, mid, x);
+        else
+            a[num].rson = add(a[now].rson, mid + 1, r, x);
+        return num;
+    }
+    inline void merge(int x, int aa, int bb) {
+        root[x] = root[x - 1];
+        aa = find(x, aa), bb = find(x, bb);
+        if (a[aa].fa != a[bb].fa) {
+            if (a[aa].deep > a[bb].deep) swap(aa, bb);
+            root[x] = hb(root[x - 1], 1, n, a[aa].fa, a[bb].fa);
+            if (a[aa].deep == a[bb].deep)
+                root[x] = add(root[x], 1, n, a[bb].fa);
+        }
+    }
+    inline bool check(int x, int xx, int yy) {
+        xx = find(x, xx), yy = find(x, yy);
+        if (a[xx].fa == a[yy].fa) return 1;
+        return 0;
     }
 };
 ```
@@ -2143,35 +2234,35 @@ class spfa : public lfs {
 ```cpp
 class toposort : public lfs {
  public:
- 	toposort(int n) : lfs(n) {}
+     toposort(int n) : lfs(n) {}
     int in[MAXN];
     vector<int> ans;
     bool operator()() {
-    	memset(in, 0, sizeof in);
-    	for (int i = 1; i <= n; i++) {
-    		for (int j = head[i]; j != -1; j = e[j].next) {
-    			in[e[j].to]++;
-    		}
-    	}
-    	queue<int> q;
-    	for (int i = 1; i <= n; i++) {
-    		if (in[i] == 0) {
-    			q.push(i);
-    		}
-    	}
-    	while (!q.empty()) {
-    		int u = q.front();
-    		q.pop();
-    		ans.push_back(u);
-    		for (int i = head[u]; i != -1; i = e[i].next) {
-    			int v = e[i].to;
-    			in[v]--;
-    			if (in[v] == 0) {
-    				q.push(v);
-    			}
-    		}
-    	}
-    	return ans.size() == n;
+        memset(in, 0, sizeof in);
+        for (int i = 1; i <= n; i++) {
+            for (int j = head[i]; j != -1; j = e[j].next) {
+                in[e[j].to]++;
+            }
+        }
+        queue<int> q;
+        for (int i = 1; i <= n; i++) {
+            if (in[i] == 0) {
+                q.push(i);
+            }
+        }
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+            ans.push_back(u);
+            for (int i = head[u]; i != -1; i = e[i].next) {
+                int v = e[i].to;
+                in[v]--;
+                if (in[v] == 0) {
+                    q.push(v);
+                }
+            }
+        }
+        return ans.size() == n;
     }
 };
 ```
@@ -2406,39 +2497,39 @@ void init_cnum() {
 template<typename T, size_t N>
 struct lucas_t {
    private:
-	T pow(T a, T b, T mod) {
-    	T res = 1;
-    	while (b) {
-        	if (b & 1) res = res * a % mod;
-        	a = a * a % mod;
-        	b /= 2;
-    	}
-    	return res;
-	}
-   	
+    T pow(T a, T b, T mod) {
+        T res = 1;
+        while (b) {
+            if (b & 1) res = res * a % mod;
+            a = a * a % mod;
+            b /= 2;
+        }
+        return res;
+    }
+
    public:
-   	T c(T n, T m, T mod) {
-   		if (n < m) {
-   			return 0;
-   		} else if (m > n - m) {
-   			m = n - m;
-   		}
-   		T a = 1, b = 1;
-   		for (int i = 0; i < m; i++) {
-   			a = a * (n - i) % mod;
-   			b = b * (i + 1) % mod;
-   		}
-   		return a * pow(b, mod - 2, mod) % mod;
-   	}
-   	
-	T operator()(T n, T m, T mod) {
-		if (m == 0) {
-			return 1;
-		} else if (m > n) {
-			return 0;
-		}	
-		return (*this)(n / mod, m / mod, mod) * c(n % mod, m % mod, mod) % mod;
-	} 	
+       T c(T n, T m, T mod) {
+           if (n < m) {
+               return 0;
+           } else if (m > n - m) {
+               m = n - m;
+           }
+           T a = 1, b = 1;
+           for (int i = 0; i < m; i++) {
+               a = a * (n - i) % mod;
+               b = b * (i + 1) % mod;
+           }
+           return a * pow(b, mod - 2, mod) % mod;
+       }
+
+    T operator()(T n, T m, T mod) {
+        if (m == 0) {
+            return 1;
+        } else if (m > n) {
+            return 0;
+        }    
+        return (*this)(n / mod, m / mod, mod) * c(n % mod, m % mod, mod) % mod;
+    }     
 };
 ```
 
@@ -2476,42 +2567,42 @@ T inv1(T a, T mod) {
 const double EPS = 1e-8;
 
 int dcmp(double x, double y) {
-	double c = x - y;
-	if (c > EPS) return 1;
-	if (c < -EPS) return -1;
-	return 0;
+    double c = x - y;
+    if (c > EPS) return 1;
+    if (c < -EPS) return -1;
+    return 0;
 }
 
 template <typename T>
 bool gauss(const vector<vector<T>>& in, vector<T>& out) {
-	vector<vector<T>> a(in);
-	size_t n = in.size();
-	// i 枚举列 
-	for (size_t i = 0; i < n; i++) {
-		// 选定当前列的最大系数项 
-		size_t mxid = i;
-		for (size_t j = i + 1; j < n; j++) {
-			if (dcmp(fabs(a[j][i]), fabs(a[mxid][i])) == 1) {
-				mxid = j;
-			}
-		}
-		// 提到当前排 
-		swap(a[i], a[mxid]);
-		if (a[i][i] == 0) return false;
-		for (size_t j = 0; j < n; j++) {
-			if (j == i) continue;
-			T mi = a[j][i] / a[i][i];
-			for (size_t k = i + 1; k <= n; k++) {
-				a[j][k] -= a[i][k] * mi;
-			}
-		} 
-	}
-	
-	out = vector<T>(n, 0);
-	for (size_t i = 0; i < n; i++) {
-		out[i] = a[i][n] / a[i][i];
-	}
-	return true;
+    vector<vector<T>> a(in);
+    size_t n = in.size();
+    // i 枚举列 
+    for (size_t i = 0; i < n; i++) {
+        // 选定当前列的最大系数项 
+        size_t mxid = i;
+        for (size_t j = i + 1; j < n; j++) {
+            if (dcmp(fabs(a[j][i]), fabs(a[mxid][i])) == 1) {
+                mxid = j;
+            }
+        }
+        // 提到当前排 
+        swap(a[i], a[mxid]);
+        if (a[i][i] == 0) return false;
+        for (size_t j = 0; j < n; j++) {
+            if (j == i) continue;
+            T mi = a[j][i] / a[i][i];
+            for (size_t k = i + 1; k <= n; k++) {
+                a[j][k] -= a[i][k] * mi;
+            }
+        } 
+    }
+
+    out = vector<T>(n, 0);
+    for (size_t i = 0; i < n; i++) {
+        out[i] = a[i][n] / a[i][i];
+    }
+    return true;
 }
 ```
 
@@ -2766,6 +2857,70 @@ void init_phi() {
         }
     }
 }
+```
+
+#### 杜教筛
+
+```cpp
+#include <unordered_map>
+#include <vector>
+using namespace std;
+
+const int MAXN = 1e6;
+
+class du_sieve {
+   private:
+    int phi[MAXN + 5], mu[MAXN + 5], cnt, N;
+    unordered_map<int, int> vphi, vmu;
+    bool vis[MAXN + 5];
+    vector<int> prime;
+
+   public:
+    void make_prime(int limit) {
+        mu[1] = phi[1] = 1;
+        for (int i = 2; i <= limit; i++) {
+            if (!vis[i]) {
+                prime.push_back(i);
+                phi[i] = i - 1, mu[i] = -1;
+            }
+            for (int j = 0; j < prime.size() && i * prime[j] <= limit; j++) {
+                vis[i * prime[j]] = 1;
+                if (i % prime[j] == 0) {
+                    phi[i * prime[j]] = phi[i] * prime[j];
+                    break;
+                }
+                phi[i * prime[j]] = phi[prime[j]] * phi[i];
+                mu[i * prime[j]] = -mu[i];
+            }
+        }
+        for (int i = 1; i <= limit; i++)
+            phi[i] += phi[i - 1], mu[i] += mu[i - 1];
+    }
+    int Phi(int x) {
+        if (x <= N) return phi[x];
+        if (vphi.count(x)) return vphi[x];
+        int ans = (1 + x) * x / 2;
+        for (int i = 2, j; i <= x; i = j + 1) {
+            j = x / (x / i);
+            ans -= (j - i + 1) * Phi(x / i);
+        }
+        return vphi[x] = ans;
+    }
+    int Mu(int x) {
+        if (x <= N) return mu[x];
+        if (vmu.count(x)) return vmu[x];
+        int ans = 1;
+        for (int i = 2, j; i <= x; i = j + 1) {
+            j = x / (x / i);
+            ans -= (j - i + 1) * Mu(x / i);
+        }
+        return vmu[x] = ans;
+    }
+    du_sieve(int n) {
+        N = n;
+        make_prime(n);
+    }
+};
 ```
 
 #### MR 素数测试
@@ -3087,7 +3242,7 @@ int manacher(T* a, size_t len) {
     int* p = new int[len * 2 + 10];
     memset(s, 0, (len * 2 + 10) * sizeof(T));
     memset(p, 0, (len * 2 + 10) * sizeof(int));
-    
+
     s[0] = s[1] = BLANK;
     for (int i = 0; i < len;i++) {
         s[i * 2 + 2] = a[i];
@@ -3095,7 +3250,7 @@ int manacher(T* a, size_t len) {
     }
     len = len * 2 + 2;
     s[len] = 0;
-    
+
     int mxpos = 0, mxaxis = 0;
     for (int i = 1; i < len; i++) {
         if (i < mxpos) {
@@ -3111,12 +3266,12 @@ int manacher(T* a, size_t len) {
             mxaxis = i;
         }
     }
-    
+
     int ans = 1;
     for (int i = 0; i < len; i++) {
         ans = max(ans, p[i]);
     }
-    
+
     delete[] s;
     delete[] p;
     return ans - 1;
