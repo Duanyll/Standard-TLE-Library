@@ -1466,97 +1466,88 @@ class treap {
 ### 可持久化 DSU
 
 ```cpp
-#include "PersistenceDSU.hpp"
-#include<algorithm> 
+#include <algorithm>
 using namespace std;
-class PersistenceDSU
-{
-private:
-    struct node
-    {
-        int lson,rson,fa,deep;
-    }a[MAXN*LOG+5];
-    int n,m,top,root[MAXN+5];
-public:
-    inline int build(int l,int r)
-    {
-        int num=++top;
-        if(l==r)
-        {
-            a[num].fa=l;
+
+const int MAXN = 1e5 + 5;
+const int LOG = 20;
+
+class persistent_dsu {
+   private:
+    struct node {
+        int lson, rson, fa, deep;
+    } a[MAXN * LOG + 5];
+    int n, m, top, root[MAXN + 5];
+
+   public:
+    inline int build(int l, int r) {
+        int num = ++top;
+        if (l == r) {
+            a[num].fa = l;
             return num;
         }
-        int mid=l+r>>1;
-        a[num].lson=build(l,mid);
-        a[num].rson=build(mid+1,r);
+        int mid = l + r >> 1;
+        a[num].lson = build(l, mid);
+        a[num].rson = build(mid + 1, r);
         return num;
     }
-    inline int que(int now,int l,int r,int x)
-    {
-        if(l==r)return now;
-        int mid=l+r>>1;
-        if(mid>=x)return que(a[now].lson,l,mid,x);
-        else return que(a[now].rson,mid+1,r,x);
+    inline int que(int now, int l, int r, int x) {
+        if (l == r) return now;
+        int mid = l + r >> 1;
+        if (mid >= x)
+            return que(a[now].lson, l, mid, x);
+        else
+            return que(a[now].rson, mid + 1, r, x);
     }
-    inline int find(int now,int x)
-    {
-        int fa=que(root[now],1,n,x);
-        if(a[fa].fa==x)return fa;
-        return find(now,a[fa].fa);
+    inline int find(int now, int x) {
+        int fa = que(root[now], 1, n, x);
+        if (a[fa].fa == x) return fa;
+        return find(now, a[fa].fa);
     }
-    inline int clone(int x)
-    {
-        int num=++top;
-        a[num]=a[x];
+    inline int clone(int x) {
+        int num = ++top;
+        a[num] = a[x];
         return num;
     }
-    inline int hb(int x,int l,int r,int fx,int fy)
-    {
-        int num=clone(x);
-    //    cout<<"hb:"<<a[x].rson<<" "<<x<<" "<<l<<" "<<r<<" "<<fx<<" "<<fy<<endl;
-        if(l==r)
-        {
-            a[num].fa=fy;
+    inline int hb(int x, int l, int r, int fx, int fy) {
+        int num = clone(x);
+        if (l == r) {
+            a[num].fa = fy;
             return num;
         }
-        int mid=l+r>>1;
-    //    cout<<"mid="<<mid<<endl;
-        if(mid>=fx)
-        {
-    //        cout<<"left"<<endl;
-            a[num].lson=hb(a[x].lson,l,mid,fx,fy);
-        }
-        else a[num].rson=hb(a[x].rson,mid+1,r,fx,fy);
+        int mid = l + r >> 1;
+        if (mid >= fx) {
+            a[num].lson = hb(a[x].lson, l, mid, fx, fy);
+        } else
+            a[num].rson = hb(a[x].rson, mid + 1, r, fx, fy);
         return num;
     }
-    inline int add(int now,int l,int r,int x)
-    {
-        int num=clone(now); 
-        if(l==r)
-        {
+    inline int add(int now, int l, int r, int x) {
+        int num = clone(now);
+        if (l == r) {
             ++a[num].deep;
             return num;
         }
-        int mid=l+r>>1;
-        if(mid>=x)a[num].lson=add(a[now].lson,l,mid,x);
-        else a[num].rson=add(a[now].rson,mid+1,r,x);
+        int mid = l + r >> 1;
+        if (mid >= x)
+            a[num].lson = add(a[now].lson, l, mid, x);
+        else
+            a[num].rson = add(a[now].rson, mid + 1, r, x);
         return num;
     }
-    inline void merge(int x,int aa,int bb)
-    {
-        root[x]=root[x-1];
-        aa=find(x,aa),bb=find(x,bb);
-        if(a[aa].fa!=a[bb].fa)
-        {
-            if(a[aa].deep>a[bb].deep)swap(aa,bb);
-            root[x]=hb(root[x-1],1,n,a[aa].fa,a[bb].fa);
-            if(a[aa].deep==a[bb].deep)root[x]=add(root[x],1,n,a[bb].fa);
+    inline void merge(int x, int aa, int bb) {
+        root[x] = root[x - 1];
+        aa = find(x, aa), bb = find(x, bb);
+        if (a[aa].fa != a[bb].fa) {
+            if (a[aa].deep > a[bb].deep) swap(aa, bb);
+            root[x] = hb(root[x - 1], 1, n, a[aa].fa, a[bb].fa);
+            if (a[aa].deep == a[bb].deep)
+                root[x] = add(root[x], 1, n, a[bb].fa);
         }
     }
-    inline bool check(int x,int xx,int yy)
-    {
-        xx=find(x,xx),yy=find(x,yy);
-        if(a[xx].fa==a[yy].fa)return 1;
+    inline bool check(int x, int xx, int yy) {
+        xx = find(x, xx), yy = find(x, yy);
+        if (a[xx].fa == a[yy].fa) return 1;
         return 0;
     }
 };
@@ -2871,70 +2862,63 @@ void init_phi() {
 #### 杜教筛
 
 ```cpp
-#include"DuSieve.hpp"
-#include<unordered_map>
-#include<vector>
+#include <unordered_map>
+#include <vector>
 using namespace std;
-class DuSieve
-{
-private: 
-    int phi[MAXN+5],mu[MAXN+5],cnt,N;    
-    unordered_map<int,int>vphi,vmu;
-    bool vis[MAXN+5];
-    vector<int>prime;
-public:
-    void Prime(int limit)
-    {
-        mu[1]=phi[1]=1;
-        for(int i=2;i<=limit;i++)
-        {
-            if(!vis[i])
-            {
+
+const int MAXN = 1e6;
+
+class du_sieve {
+   private:
+    int phi[MAXN + 5], mu[MAXN + 5], cnt, N;
+    unordered_map<int, int> vphi, vmu;
+    bool vis[MAXN + 5];
+    vector<int> prime;
+
+   public:
+    void make_prime(int limit) {
+        mu[1] = phi[1] = 1;
+        for (int i = 2; i <= limit; i++) {
+            if (!vis[i]) {
                 prime.push_back(i);
-                phi[i]=i-1,mu[i]=-1;
+                phi[i] = i - 1, mu[i] = -1;
             }
-            for(int j=0;j<prime.size()&&i*prime[j]<=limit;j++)
-            {
-                vis[i*prime[j]]=1; 
-                if(i%prime[j]==0)
-                {
-                    phi[i*prime[j]]=phi[i]*prime[j];
-                    break; 
+            for (int j = 0; j < prime.size() && i * prime[j] <= limit; j++) {
+                vis[i * prime[j]] = 1;
+                if (i % prime[j] == 0) {
+                    phi[i * prime[j]] = phi[i] * prime[j];
+                    break;
                 }
-                phi[i*prime[j]]=phi[prime[j]]*phi[i];
-                mu[i*prime[j]]=-mu[i];
+                phi[i * prime[j]] = phi[prime[j]] * phi[i];
+                mu[i * prime[j]] = -mu[i];
             }
         }
-        for(int i=1;i<=limit;i++)phi[i]+=phi[i-1],mu[i]+=mu[i-1];
+        for (int i = 1; i <= limit; i++)
+            phi[i] += phi[i - 1], mu[i] += mu[i - 1];
     }
-    int Phi(int x)
-    {
-        if(x<=N)return phi[x];
-        if(vphi.count(x))return vphi[x];
-        int ans=(1+x)*x/2;
-        for(int i=2,j;i<=x;i=j+1)
-        {
-            j=x/(x/i);
-            ans-=(j-i+1)*Phi(x/i);
+    int Phi(int x) {
+        if (x <= N) return phi[x];
+        if (vphi.count(x)) return vphi[x];
+        int ans = (1 + x) * x / 2;
+        for (int i = 2, j; i <= x; i = j + 1) {
+            j = x / (x / i);
+            ans -= (j - i + 1) * Phi(x / i);
         }
-        return vphi[x]=ans;
+        return vphi[x] = ans;
     }
-    int Mu(int x)
-    {
-        if(x<=N)return mu[x];
-        if(vmu.count(x))return vmu[x];
-        int ans=1;
-        for(int i=2,j;i<=x;i=j+1)
-        {
-            j=x/(x/i);
-            ans-=(j-i+1)*Mu(x/i);
+    int Mu(int x) {
+        if (x <= N) return mu[x];
+        if (vmu.count(x)) return vmu[x];
+        int ans = 1;
+        for (int i = 2, j; i <= x; i = j + 1) {
+            j = x / (x / i);
+            ans -= (j - i + 1) * Mu(x / i);
         }
-        return vmu[x]=ans;
+        return vmu[x] = ans;
     }
-    DuSieve(int n)
-    {
-        N=n;
-        Prime(n);
+    du_sieve(int n) {
+        N = n;
+        make_prime(n);
     }
 };
 ```
